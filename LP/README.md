@@ -109,7 +109,7 @@ Eliminarà els fitxers creats al compilar el fitxer .g4
 ```
 
 ## Observacions
-- Escriure sense accents, si no no reconeixerà el caràcter
+- Escriure sense accents, sinó, no reconeixerà el caràcter.
 
 ## Autor
 Eudald Pizarro Camí (eudald.pizarro@estudiantat.upc.edu)
