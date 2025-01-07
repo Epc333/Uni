@@ -1,0 +1,16 @@
+Joc de proves per la definci de funcions i constants 
+Prova de la definicio d'una constant 
+El valor de PI es  3.141592 
+Prova de la definicio d'una funcio 
+El resultat de sumar 3 i 4 es  7 
+Prova d'una funcio recursiva 
+El factorial de 5 es  120 
+Prova de definir un parametre global i despres canviar-li el valor 
+El valor de a es  5 
+Canviem el valor de a a 10 
+El nou valor de a es  10 
+Prova de definir una llista i operar amb les seves funcions 
+La llista es  [1, 2, 3, 4, 5] 
+El primer element de la llista es  1 
+Li afegim un element a la llista 
+La nova llista es  [0, 1, 2, 3, 4, 5] 

@@ -59,7 +59,6 @@ class EvalVisitor(schemeVisitor):
         self.globals['null?'] = 'null?'
 
         # Entrada/sortida
-        self.globals['display'] = 'display'
         self.globals['newline'] = 'newline'
         self.globals['read'] = 'read'
 
@@ -105,10 +104,9 @@ class EvalVisitor(schemeVisitor):
             return [args[0]] + args[1]
         elif operator == 'null?':
             return len(args[0]) == 0
-        elif operator == 'display':
-            print(' '.join(map(str, args)), end=' ')
         elif operator == 'newline':
             print()
+            return None
         elif operator == 'read':
             return self.read()
         elif operator == 'and':
@@ -137,10 +135,45 @@ class EvalVisitor(schemeVisitor):
         elif text.startswith('"') or text.startswith("'"):
             return text[1:-1]
         elif text.isdigit():
-            return int(text)
+            return float(text) if '.' in text else int(text)
+            
         else:
             return text
-        
+
+    def visitChild(self, ctx):
+        '''
+        Funció per visitar els fills del node
+        '''
+        result = []
+        for child in ctx.getChildren():
+            if child.getChildCount() > 1:
+                result.append(self.visitChild(child))
+            else:
+                result.append(child.getText())
+        return ' '.join(result)
+
+    def visitDisplay(self, ctx):
+        '''
+        Funció per mostrar el resultat d'una expressió
+        '''
+        children = list(ctx.getChildren())[2:-1]
+        if not children:
+            result = ''
+        elif len(children) ==1:
+            result = self.visit(children[0])
+        else:
+            concatenat =[]
+            for child in children:
+                concatenat.append(self.visitChild(child))
+            concatenat = (' '.join(concatenat))
+            if concatenat.startswith('"') or concatenat.startswith("'"):
+                result = concatenat[1:-1]
+            else:
+                result = concatenat
+            
+        print(result, end=' ')
+        return result
+
     def readList(self, text):
         '''
         Funcio per llegir llistes
@@ -260,6 +293,9 @@ class EvalVisitor(schemeVisitor):
         elif operator == 'define': #Permet definir variables i funcions
             return self.visitDefine(ctx)
         
+        elif operator == 'display': #Permet mostrar el resultat d'una expressió
+            return self.visitDisplay(ctx)
+
         elif operator == "begin":   #Permet fer una sequencia d'operacions
             return self.visitBegin(ctx)
 
@@ -300,6 +336,7 @@ class EvalVisitor(schemeVisitor):
         Cerca variables en l'entorn local o constants globals
         '''
         text = ctx.getText()
+
         for env in reversed(self.ts):
             if text in env:
                 return env[text]
@@ -310,7 +347,10 @@ class EvalVisitor(schemeVisitor):
         elif text in self.functions:
             return text
         
-        if text[0].isdigit():
+        if text.isdigit():
+            if '.' in text:
+                return float(text)
             return int(text)
+            
         else:
             return text  # Variable

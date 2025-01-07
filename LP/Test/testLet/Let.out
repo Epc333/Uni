@@ -1,0 +1,12 @@
+Joc de proves pel let 
+Prova basica del let 
+El valor de a es  5 
+El valor de b es  3 
+La suma de a i b es  8 
+Prova de let amb una funcio 
+El valor de a es  5 
+El valor de b es  3 
+La suma de a i b es  8 
+Prova de tenir una variable global amb el mateix nom que una variable local 
+El valor de a es  5 
+El valor de la variable global a es  10 

@@ -110,6 +110,7 @@ Eliminarà els fitxers creats al compilar el fitxer .g4
 
 ## Observacions
 - Escriure sense accents, sinó, no reconeixerà el caràcter.
+- Per poder definir una funció en el let no deixa, s'ha de definir fora i cridar-la a dins, es a dir no es pot definir una funció local.
 
 ## Autor
 Eudald Pizarro Camí (eudald.pizarro@estudiantat.upc.edu)

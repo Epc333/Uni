@@ -1,0 +1,13 @@
+Joc de proves de les operacions basiques 
+Prova de la suma de dos enters 3 + 4 =  7 
+Prova de la resta de dos enters 3 - 4 =  -1 
+Prova de la multiplicacio de dos enters 3 * 4 =  12 
+Prova de la divisio de dos enters 3 / 4 =  0.75 
+Prova en combinar les operacions 6 + 3 * ( 5 / ( 8 - 6 ) ) =  13.5 
+Prova operacions amb comparadors 
+Prova de la comparacio de dos nombres 3 < 4 =  True 
+Prova de la comparacio de dos nombres 3 > 4 =  False 
+Prova de la comparacio de dos nombres 3 = 4 =  False 
+Prova de la comparacio de dos nombres 3 <= 4 =  True 
+Prova de la comparacio de dos nombres 3 >= 4 =  False 
+Prova de la comparacio de dos nombres 3 != 4 =  True 
