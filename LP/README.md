@@ -108,5 +108,8 @@ Eliminarà els fitxers creats al compilar el fitxer .g4
     (- x y))  ;Resultat: 2
 ```
 
+## Observacions
+- Escriure sense accents, si no no reconeixerà el caràcter
+
 ## Autor
-Eudald Pizarro Camí
+Eudald Pizarro Camí (eudald.pizarro@estudiantat.upc.edu)
