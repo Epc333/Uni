@@ -108,9 +108,20 @@ Eliminarà els fitxers creats al compilar el fitxer .g4
     (- x y))  ;Resultat: 2
 ```
 
+## Test
+A la carpeta Test trobareu tots els jocs de proves fets per aquest intèrpet, estan separats en categories:
+  - Condicionals (if, cond, booleans)
+  - Define (definició de funcions, de variables globals i operacions en llistes)
+  - Entrada/Sortida (read, display, newline)
+  - Funcions d'ordre superior (utilització de funcions d'ordre superior i cridades en un main)
+  - Let
+  - Operacions bàsiques (operacions aritmètiques + comparacions)
+
 ## Observacions
 - Escriure sense accents, sinó, no reconeixerà el caràcter.
 - Per poder definir una funció en el let no deixa, s'ha de definir fora i cridar-la a dins, es a dir no es pot definir una funció local.
+- Si existeix una funció main, no es pot fer cap display entre funcions, s'han de fer tots al main
+
 
 ## Autor
 Eudald Pizarro Camí (eudald.pizarro@estudiantat.upc.edu)
