@@ -180,12 +180,14 @@ class EvalVisitor(schemeVisitor):
         '''
         text = text.replace("'", "").replace("(", "").replace(")", "")
     
-        # Split by commas and convert to integers
+        # Separar els elements per les comes
         numeros = []
         for num in text.split(","):
             num = num.strip()
             if num.isdigit():
-                numeros.append(int(num))
+                if '.' in text:
+                    return float(text)
+                return int(text)
                 
         return numeros
        
