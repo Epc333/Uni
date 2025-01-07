@@ -1,7 +1,8 @@
-all: antlr
+all: parser
 
-antlr: scheme.g4
-	antlr3 -Dlanguage=Python3 -no-listener -visitor scheme.g4
+parser: scheme.g4
+	antlr4 -Dlanguage=Python3 -no-listener -visitor scheme.g4
 
 clean:
-	rm -f *.interp *.tokens *Parser.py *Lexer.py *Visitor.py
+	rm -f *.interp *.tokens
+	rm -f schemeLexer.py schemeParser.py schemeVisitor.py schemeListener.py
