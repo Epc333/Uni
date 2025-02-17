@@ -1,0 +1,11 @@
+- Operadors bàsics (/,*,+,-, %)
+- Operador unari
+- Parentesis
+- Funció de max
+- Funció de min
+- Funció d'abs
+- Factorial
+- Operadors booleans (AND, OR, NOT)
+- Pow
+- Funcio de sum elements d'una llista
+- while ?
