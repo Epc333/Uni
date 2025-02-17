@@ -1,0 +1,14 @@
+5. Define a regular expression for all strings that represent financial quantities in American notation.
+Examples:
+$**2,345.67     $12,452,183.16      $****12     $**0
+These have a leading dollar sign ($), an optional string of asterisks (* - used on checks to discourage
+a fraud), a string of decimal digits, and an optional fractional part consisting of a decimal point (.)
+and two decimal digits. The string of digits to the left of the decimal point may consist of a single
+zero (0). Otherwise it must not start with a zero. If there are more than three digits to the left of
+the decimal point, groups of three (counting from the right) must be separated by commas (,).
+
+'$' ('*')* (0 | ( D0 | D0 D | D0 D D) ( (',' D D D)* )? ('.' D D)? )
+
+
+D = [0 - 9]
+D0 = [1 - 9]

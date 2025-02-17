@@ -1,0 +1,9 @@
+1. Define a regular expression for the floating point numbers. Examples:
+    3.1416  -3e4  +1.0e-5  .567e+8
+(In case of using a '.', a decimal digit is always requested)
+
+Solució:
+
+(+|-)? (d+ (. d*)? | . d+) ((e)? (+ | -)? d+)?
+
+d = [0-9]

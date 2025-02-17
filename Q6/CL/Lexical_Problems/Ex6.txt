@@ -1,0 +1,15 @@
+6. Define a regular expression for all strings that represent inexact constants in Scheme. Scheme allows
+real numbers to be explicitly inexact(imprecise). A programmer who wants to express all constants
+using the same number of characters can use sharp signs (#) in place of any lower-significance digits
+whose values are not known. A base-ten constant without exponent consists of one or more digits
+followed by zero of more sharp signs. An optional decimal point can be placed at the beginning, the
+end, or anywhere in between. 
+Examples:
+35##        35#.##      356.3##     .35##       35.     35#.
+
+DIGITS+ ( ( (PUNT (DIGITS*)?) | (COIXINET*)? PUNT)? (COIXINET*)?  )?
+
+PUNT = '.'
+DIGITS = [0 - 9]
+COIXINET = '#'
+
