@@ -1,0 +1,29 @@
+
+Game rules:
+	-4 players
+		-15 pioneers
+		-5 Furyans
+	- Hellhounds (max 10) --> id = -1
+	- 120 rounds
+	- 2 levels 40x80
+		-k = 0 undergorund
+		-k = 1 outside
+	- 20 elevators
+	- Killing any other unit you will capture it
+	- Elevator surrender by eight cave cells.
+	- At outside half of cells are under the sun
+		-Stars at columns 40 to 79, move +2 for each round
+	- Attack = move to any cell occupied
+		- Pioneers cannot atack
+		- Furyans cannot atack furyans
+		- Necromonger cannot atack any necromonger 
+		- Hellhound kill anyone adjacent
+	- Begining:
+		- 15 Pioneers (conquer cells and pick gems) --> 50 hp 
+		- 5 Furyans --> 100 hp and 25 - 50 damage 
+	- Necromongers --> 75 hp and 20 - 40 damage 
+		- Attacks adjecent Pioneer or Furyan or it approaches them 
+	- 3 Hellhounds --> Immortal
+		- Attacks to the nearest Pioneer or Furyan
+	- If your unit gets killed by player -1, it will spawn randomly to any group
+	- End of round +5 hp units 

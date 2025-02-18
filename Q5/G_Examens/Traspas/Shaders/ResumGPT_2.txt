@@ -1,0 +1,133 @@
+Estas funciones son muy útiles para operaciones matemáticas dentro de shaders en OpenGL. Son aplicadas comúnmente en efectos de iluminación, texturizado y manipulación de posiciones.
+
+    Fract (fract):
+        Descripción: Calcula la parte fraccionaria de un número, devolviendo un valor entre 0 y 1. En términos matemáticos, toma un número y devuelve el valor después de la coma decimal.
+        Uso: Utilizado en cálculos de patrones repetitivos, como en texturas que se repiten o efectos como ruido y "glitching" de píxeles.
+        Sintaxis: float result = fract(float x); o vec2 result = fract(vec2 x);
+        Ejemplo de uso: Para crear una animación de movimiento continuo que se reinicie al llegar a un valor específico.
+
+    Length (length):
+        Descripción: Calcula la magnitud o longitud de un vector. Esto se logra calculando la raíz cuadrada de la suma de los componentes del vector al cuadrado.
+        Uso: Principalmente utilizado para encontrar distancias relativas o magnitudes de vectores, como en la normalización de vectores, detección de distancia entre objetos y en cálculos de iluminación.
+        Sintaxis: float result = length(vec3 x);
+        Rango de salida: [0,∞)[0,∞), ya que la longitud no puede ser negativa.
+
+    Distance (distance):
+        Descripción: Calcula la distancia euclidiana entre dos puntos o vectores, similar al cálculo de longitud pero entre dos vectores en lugar de uno solo.
+        Uso: Común en gráficos para calcular la distancia entre un punto y una fuente de luz o entre dos objetos, fundamental en cálculos de atenuación y efectos de proximidad.
+        Sintaxis: float result = distance(vec3 point1, vec3 point2);
+        Rango de salida: [0,∞)[0,∞).
+
+    Step (step):
+        Descripción: Es una función escalón. Compara cada componente de un vector con un valor umbral; si el componente es mayor que el umbral, devuelve 1, si es menor, devuelve 0.
+        Uso: Se utiliza para crear efectos de corte en shaders, como bordes duros y patrones. También puede funcionar como un filtro binario en efectos de iluminación o texturización.
+        Sintaxis: float result = step(float edge, float x);
+        Rango de salida: 0 o 1 para cada componente comparado.
+
+    Smoothstep (smoothstep):
+        Descripción: Similar a step, pero la transición es suave entre 0 y 1, en lugar de un cambio abrupto.
+        Uso: Muy útil para transiciones suaves en efectos visuales, como sombras difuminadas o gradientes suaves. Esta función es ideal para suavizar el borde de una textura o patrón.
+        Sintaxis: float result = smoothstep(float edge0, float edge1, float x);
+        Rango de salida: [0,1][0,1] en cada componente.
+
+    Mix (mix):
+        Descripción: Realiza una interpolación lineal entre dos valores según un factor interpolante. Similar a una operación de "mezcla".
+        Uso: Usado para mezclar colores, transiciones suaves y efectos de interpolación entre dos valores o texturas.
+        Sintaxis: vec3 result = mix(vec3 x, vec3 y, float a);
+        Rango de salida: La mezcla de los dos valores dentro del rango de los valores originales.
+
+Tipos de Coordenadas en OpenGL
+
+En gráficos, distintas coordenadas representan diferentes etapas de la transformación de vértices. Aquí se explican los tipos de coordenadas y cómo se obtienen en OpenGL:
+
+    Coordenadas Locales (Objeto):
+        Definición: Son las coordenadas iniciales en el espacio del objeto, antes de aplicarle cualquier transformación.
+        Uso: Definen la forma y estructura del objeto en su estado "crudo" y son el punto de partida de cualquier transformación.
+        Transformación para obtener coordenadas de mundo: Multiplicación por la matriz de modelado.
+
+    Coordenadas de Mundo:
+        Definición: Resultado de transformar las coordenadas locales para ubicarlas en el contexto de la escena global.
+        Uso: Estas coordenadas representan la posición del objeto dentro de la escena y permiten ubicarlo en un contexto global.
+        Transformación para obtener coordenadas de vista: Multiplicación por la matriz de vista (para mover la cámara al origen).
+
+    Coordenadas de Vista (Cámara):
+        Definición: Ubican el objeto desde el punto de vista de la cámara.
+        Uso: Facilita la visualización de objetos en función de la perspectiva de la cámara. Es la etapa previa a la proyección.
+        Transformación para obtener coordenadas de clip: Multiplicación por la matriz de proyección (para el campo de visión de la cámara).
+
+    Coordenadas de Clip:
+        Definición: Coordenadas proyectadas en un espacio donde se realiza el recorte y las pruebas de visibilidad.
+        Uso: Permiten determinar si los vértices están dentro del campo de visión de la cámara.
+        Normalización en NDC: Dividiendo por el componente W.
+
+    Coordenadas Normalizadas de Dispositivo (NDC):
+        Definición: Las coordenadas normalizadas que OpenGL usa para decidir qué se muestra en pantalla, dentro de un rango específico.
+        Rango: Entre -1 y 1 en X, Y y Z.
+        Uso: Todas las coordenadas en este espacio dentro del rango [−1,1][−1,1] serán visibles en la pantalla, preparadas para mapeo final en 2D.
+
+    Coordenadas de Pantalla:
+        Definición: Las coordenadas en 2D que representan píxeles en la pantalla.
+        Uso: Usadas en la etapa final para dibujar cada píxel en pantalla, dependiendo de la resolución de la ventana.
+        Rango: Depende de la resolución del dispositivo (por ejemplo, 1920x1080 en una pantalla Full HD).
+
+Flujo de Transformación de Coordenadas
+
+    Coordenadas de Objeto a Mundo: Multiplicación de vértices por la matriz de modelado.
+    De Mundo a Vista: Multiplicación por la matriz de vista para mover la posición de la cámara.
+    De Vista a Clip: Multiplicación por la matriz de proyección para pasar a coordenadas de clip.
+    Clip a NDC: División por el componente W en cada vértice.
+    NDC a Pantalla: Mapeo de NDC a coordenadas de pantalla para mostrar en píxeles.
+
+Este conjunto de transformaciones y funciones permite crear, manipular y renderizar objetos tridimensionales con gran precisión en OpenGL, aprovechando las operaciones en shaders para efectos visuales detallados y personalizados.
+
+Escalado de un Vértice entre Viewports
+
+Supongamos que tienes un vértice con coordenadas (x,y)(x,y) en un viewport original, y deseas transformarlo a coordenadas (x′,y′)(x′,y′) en un viewport de diferente tamaño. El proceso se divide en dos pasos:
+
+    Normalizar el vértice en el viewport original.
+    Aplicar el escalado para adaptarlo al nuevo viewport.
+
+Paso 1: Normalizar el Vértice en el Viewport Original
+
+Primero, necesitas expresar las coordenadas del vértice (x,y)(x,y) en términos del viewport original. Si el viewport original tiene las dimensiones width_orig y height_orig, puedes normalizar las coordenadas del vértice a un rango de [0,1][0,1] en ambos ejes:
+xnorm=x / width_orig
+ynorm=y / height_orig
+
+Este paso convierte el vértice a coordenadas relativas dentro del viewport original.
+Paso 2: Escalar el Vértice al Nuevo Viewport
+
+Ahora, usando las coordenadas normalizadas, puedes mapear el vértice al nuevo viewport con dimensiones width_new y height_new. Para hacer esto, simplemente multiplicas las coordenadas normalizadas por las dimensiones del nuevo viewport:
+x′=xnorm * width_new
+y′=ynorm * height_new
+
+Fórmula Completa de Escalado
+
+Combinando ambos pasos, las coordenadas (x′,y′)(x′,y′) en el nuevo viewport se calculan de la siguiente forma:
+x′= (x / width_orig) * width_new
+y′=(y / height_orig) * height_new
+
+Esta transformación adapta el vértice a la escala del nuevo viewport, manteniendo las proporciones y la ubicación relativa del vértice dentro de la ventana.
+
+gl_Position
+
+    Descripción: gl_Position es una variable de salida en el vertex shader que representa las coordenadas finales de cada vértice en el espacio de clip (clip space).
+    Uso: Es obligatoria en el vertex shader, ya que determina la posición final del vértice en pantalla. El pipeline de renderizado usa esta posición para transformar el vértice a coordenadas normalizadas de dispositivo (NDC) y finalmente a coordenadas de pantalla.
+    Tipo de dato: vec4
+    Cómo se usa: En el vertex shader, al final de tus cálculos, debes asignar un valor a gl_Position, típicamente multiplicando la posición original del vértice por matrices de transformación (model, view y projection):
+
+    gl_Position = projection * view * model * vec4(vertexPosition, 1.0);
+
+    Nota: La w en gl_Position es importante para la perspectiva y debe ser no nula para evitar errores de visualización.
+
+2. gl_FragCoord
+
+    Descripción: gl_FragCoord es una variable de entrada en el fragment shader que contiene las coordenadas de cada fragmento (píxel) en espacio de pantalla, además de su profundidad en el eje z.
+    Uso: Muy útil para calcular efectos dependientes de la posición en pantalla, como antialiasing, sombras basadas en pantalla (screen-space shadows) y efectos de post-procesamiento.
+    Tipo de dato: vec4, donde:
+        gl_FragCoord.x y gl_FragCoord.y son las coordenadas de pantalla.
+        gl_FragCoord.z representa la profundidad.
+        gl_FragCoord.w puede usarse en algunos contextos para cálculos adicionales en shaders avanzados.
+    Ejemplo de uso: En un fragment shader, puedes usar gl_FragCoord para modificar el color de un píxel en función de su ubicación:
+
+vec3 color = vec3(gl_FragCoord.x / screenWidth, gl_FragCoord.y / screenHeight, 0.5);
+

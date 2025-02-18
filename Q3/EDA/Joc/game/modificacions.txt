@@ -1,0 +1,4 @@
+AIEpc_v3.cc
+pair<bool, vector<Pos>> furyans_bfs(Pos furyan):
+    - if (cell(p).type != Rock and (cell(p).id == -1 or unit(cell(p).id).player != me()))
+    -- if (cell(p).type != Rock)

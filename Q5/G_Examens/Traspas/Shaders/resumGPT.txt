@@ -1,0 +1,72 @@
+OpenGL utiliza un conjunto de funciones y operaciones en los shaders para realizar cálculos de gráficos. Estas operaciones son fundamentales para trabajar con efectos visuales avanzados como iluminación, sombras, reflejos, etc. Aquí tienes un resumen de algunas de las más comunes y cómo se usan:
+
+    Dot Product (dot):
+        Descripción: Calcula el producto escalar entre dos vectores. En términos matemáticos, para los vectores AA y BB, es la suma de las multiplicaciones de sus componentes.
+        Uso: Generalmente, se usa en cálculos de iluminación para determinar la intensidad de la luz sobre una superficie. Específicamente, se emplea para saber qué tan alineado está el vector de la normal de una superficie con el vector de luz.
+        Sintaxis: float result = dot(vec3 A, vec3 B);
+        Rango de salida: [−1,1][−1,1], donde 1 indica alineación perfecta y -1 indica que están en direcciones opuestas.
+
+    Cross Product (cross):
+        Descripción: Calcula el producto vectorial entre dos vectores de 3 dimensiones, resultando en un vector perpendicular a ambos.
+        Uso: Es útil en cálculos de superficies y normales en 3D. Por ejemplo, si tienes dos vectores en un plano, su producto cruz te dará un vector perpendicular a ese plano, que es crucial para determinar la orientación de una superficie.
+        Sintaxis: vec3 result = cross(vec3 A, vec3 B);
+
+    Normalize (normalize):
+        Descripción: Convierte un vector en un vector unitario (de magnitud 1) al dividir cada componente entre la longitud del vector.
+        Uso: Utilizado en operaciones con vectores, como normales o direcciones de luz, donde solo importa la dirección del vector y no su magnitud.
+        Sintaxis: vec3 result = normalize(vec3 A);
+
+    Reflect (reflect):
+        Descripción: Calcula el vector de reflexión de un vector de incidencia a partir de una superficie con una dirección de normal dada.
+        Uso: Es esencial en los cálculos de reflejos, como los que se encuentran en materiales reflectantes o espejos.
+        Sintaxis: vec3 result = reflect(vec3 incident, vec3 normal);
+
+    Refract (refract):
+        Descripción: Calcula el vector refractado cuando un vector de incidencia atraviesa una superficie con una dirección de normal dada y un índice de refracción.
+        Uso: Usado para efectos de transparencia, como el paso de la luz a través del agua o vidrio.
+        Sintaxis: vec3 result = refract(vec3 incident, vec3 normal, float eta);, donde eta es el índice de refracción relativo.
+
+Estas funciones se implementan dentro de los shaders de OpenGL, que se dividen en tipos específicos como Vertex Shader (para vértices) y Fragment Shader (para píxeles). Los shaders te permiten manipular cómo se renderizan los gráficos a nivel de GPU, logrando efectos visuales más avanzados y personalizados.
+Tipos de Coordenadas en OpenGL
+
+En gráficos 3D, se usan distintos tipos de coordenadas en diferentes etapas de renderizado. Cada tipo tiene un propósito y un rango específico. Aquí tienes los tipos de coordenadas más comunes:
+
+    Coordenadas Locales o de Objeto:
+        Definición: Son las coordenadas originales de un objeto en su propio espacio de referencia (antes de cualquier transformación).
+        Uso: Útil para definir la forma y tamaño de un objeto. Estas coordenadas se usan como punto de partida en el pipeline de renderizado.
+        Rango: Sin rango específico, dependen del diseño del objeto.
+
+    Coordenadas de Mundo:
+        Definición: Estas coordenadas sitúan los objetos en el contexto de una escena o mundo completo, aplicando la transformación de "modelado" al objeto.
+        Uso: Utilizado para posicionar objetos en una escena de manera relativa a un origen común.
+        Rango: No tiene un rango fijo; es definido por la escala del mundo.
+
+    Coordenadas de Vista o de Cámara:
+        Definición: Son las coordenadas después de aplicar una transformación de vista, que mueve el punto de vista a la posición de la cámara.
+        Uso: Posiciona los objetos desde la perspectiva de la cámara, facilitando cálculos de iluminación y visibilidad.
+        Rango: Igual que las coordenadas de mundo, aunque suelen centrarse en torno al origen de la cámara.
+
+    Coordenadas de Clip:
+        Definición: Estas coordenadas resultan de aplicar la transformación de proyección, y son el último paso antes de que se realice el corte de los fragmentos fuera de la vista.
+        Uso: Se utiliza para identificar las partes de los objetos que están dentro del campo de visión de la cámara.
+        Rango: No tienen un rango fijo, pero suelen involucrar la distancia al plano de recorte cerca y lejos.
+
+    Coordenadas Normalizadas de Dispositivo (NDC):
+        Definición: Son las coordenadas de clip normalizadas entre -1 y 1 en los ejes X, Y y Z, listas para ser convertidas en coordenadas de pantalla.
+        Uso: La etapa en la que se decide qué partes del objeto aparecen en la pantalla.
+        Rango: [−1,1][−1,1] en los tres ejes (X, Y, Z).
+
+    Coordenadas de Pantalla:
+        Definición: Son las coordenadas finales en 2D que se usan para dibujar los píxeles en la pantalla, tras mapear de NDC a la resolución de pantalla.
+        Uso: Se usan para rasterizar la imagen final en la pantalla del dispositivo.
+        Rango: Depende de la resolución del dispositivo de salida (por ejemplo, 1920x1080 para una pantalla Full HD).
+
+Flujo de Transformación de Coordenadas
+
+    Objeto a Mundo: Se transforma cada vértice del objeto con la matriz de modelado.
+    Mundo a Vista: Se aplica la matriz de vista para ubicar la cámara en el origen.
+    Vista a Clip: Se aplica la matriz de proyección para transformar la escena en coordenadas de clip.
+    Clip a NDC: OpenGL divide por el componente W, pasando a NDC.
+    NDC a Pantalla: Se mapea NDC a coordenadas de pantalla, ajustándose al tamaño de la ventana.
+
+Con estas transformaciones y funciones en shaders, OpenGL te permite crear representaciones realistas y detalladas de objetos tridimensionales.

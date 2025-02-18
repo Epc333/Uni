@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>744</width>
+    <height>618</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="MyQProgressBar" name="progressBar0">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar1">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>1</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar2">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>2</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar3">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>3</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar4">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>4</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar5">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>5</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar6">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>6</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar7">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>7</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar8">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>8</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyQProgressBar" name="progressBar9">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="value">
+        <number>9</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Amplitud</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QSlider" name="verticalSlider">
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>50</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QSlider" name="horizontalSlider">
+         <property name="minimum">
+          <number>-500</number>
+         </property>
+         <property name="maximum">
+          <number>500</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="3">
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="text">
+      <string>Exit</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+S</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Inici</string>
+       </property>
+       <property name="shortcut">
+        <string>Alt+I</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>Timer</string>
+       </property>
+       <property name="shortcut">
+        <string>Alt+T</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>         Fase</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyQProgressBar</class>
+   <extends>QProgressBar</extends>
+   <header location="global">MyQProgressBar.h</header>
+   <slots>
+    <signal>actualitza()</signal>
+    <signal>setBarraHoritzontal(int)</signal>
+    <signal>setBarraVert(int)</signal>
+    <slot>amplitud(int)</slot>
+    <slot>inici()</slot>
+    <slot>ActAmp(int)</slot>
+    <slot>ActFase(int)</slot>
+    <slot>ActivarTimer()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>verticalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>progressBar0</receiver>
+   <slot>ActAmp(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>726</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>215</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>progressBar0</receiver>
+   <slot>ActFase(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>403</x>
+     <y>601</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>215</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>371</x>
+     <y>308</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>progressBar0</sender>
+   <signal>setBarraHoritzontal(int)</signal>
+   <receiver>horizontalSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>403</x>
+     <y>601</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>progressBar0</sender>
+   <signal>setBarraVert(int)</signal>
+   <receiver>verticalSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>726</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar0</receiver>
+   <slot>ActivarTimer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>214</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar4</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>313</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar9</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>667</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar0</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>64</x>
+     <y>402</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>215</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar6</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>490</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar5</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>431</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar2</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar3</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>372</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar7</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>549</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar1</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>195</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>progressBar8</receiver>
+   <slot>inici()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>608</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
