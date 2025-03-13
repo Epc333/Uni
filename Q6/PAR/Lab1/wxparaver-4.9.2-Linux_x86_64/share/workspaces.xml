@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="15">
+<workspace_manager class_id="0" tracking_level="0" version="0">
+	<workspaces class_id="1" tracking_level="0" version="0">
+		<count>14</count>
+		<item_version>0</item_version>
+		<item class_id="2" tracking_level="0" version="0">
+			<first>Burst mode</first>
+			<second class_id="3" tracking_level="0" version="2">
+				<name>Burst mode</name>
+				<type>2</type>
+				<autoTypes class_id="4" tracking_level="0" version="0">
+					<count>1</count>
+					<item_version>1</item_version>
+					<item class_id="5" tracking_level="0" version="1">
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAIb5NwM=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs class_id="6" tracking_level="0" version="0">
+					<count>4</count>
+					<item_version>0</item_version>
+					<item class_id="7" tracking_level="0" version="0">
+						<first>burst_mode/2dh_BurstEfficiency.cfg</first>
+						<second>Efficiency</second>
+					</item>
+					<item>
+						<first>burst_mode/2dh_granularity.cfg</first>
+						<second>Histogram of computation granularities</second>
+					</item>
+					<item>
+						<first>burst_mode/avg_MPI_call_duration.cfg</first>
+						<second>Average MPI call duration</second>
+					</item>
+					<item>
+						<first>burst_mode/MPI_p2p_BW.cfg</first>
+						<second>Bandwidth and bytes in MPI point to pint calls</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>Call stack references</first>
+			<second>
+				<name>Call stack references</name>
+				<type>2</type>
+				<autoTypes>
+					<count>1</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAIEdLAQ=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>2</count>
+					<item_version>0</item_version>
+					<item>
+						<first>General/link_to_source/by_call_stack/MPI_caller.cfg</first>
+						<second>Caller function</second>
+					</item>
+					<item>
+						<first>General/link_to_source/by_call_stack/2d_caller_line.cfg</first>
+						<second>Profile caller line</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>Clustering</first>
+			<second>
+				<name>Clustering</name>
+				<type>2</type>
+				<autoTypes>
+					<count>1</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAIFKXQU=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>3</count>
+					<item_version>0</item_version>
+					<item>
+						<first>clustering/2dp_clusters.cfg</first>
+						<second>Profile of clusters</second>
+					</item>
+					<item>
+						<first>clustering/3dh_duration_cid.cfg</first>
+						<second>Histogram of duration per cluster</second>
+					</item>
+					<item>
+						<first>clustering/3dh_instr_clusterID.cfg</first>
+						<second>Histogram of instructions per cluster</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>MPI</first>
+			<second>
+				<name>MPI</name>
+				<type>2</type>
+				<autoTypes>
+					<count>3</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAIHw+gI=
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAILw+gI=
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAIPw+gI=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>6</count>
+					<item_version>0</item_version>
+					<item>
+						<first>mpi/views/MPI_call.cfg</first>
+						<second>MPI calls</second>
+					</item>
+					<item>
+						<first>mpi/views/mpi_msg_size.cfg</first>
+						<second>MPI size</second>
+					</item>
+					<item>
+						<first>mpi/analysis/mpi_stats.cfg</first>
+						<second>MPI profile</second>
+					</item>
+					<item>
+						<first>mpi/analysis/connectivity.cfg</first>
+						<second>Point 2 point connectivity pattern</second>
+					</item>
+					<item>
+						<first>mpi/analysis/3dh_duration_MPIcall.cfg</first>
+						<second>Histogram of durations per MPI call</second>
+					</item>
+					<item>
+						<first>mpi/analysis/3dh_size_call.cfg</first>
+						<second>Histogram of message sizes per call</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>OmpSs</first>
+			<second>
+				<name>OmpSs</name>
+				<type>2</type>
+				<autoTypes>
+					<count>1</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAIFhjAA=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>4</count>
+					<item_version>0</item_version>
+					<item>
+						<first>OmpSs/task_and_deps.cfg</first>
+						<second>Tasks and dependences (data and control)</second>
+					</item>
+					<item>
+						<first>OmpSs/3dh_duration_task.cfg</first>
+						<second>Histogram of duration of tasks</second>
+					</item>
+					<item>
+						<first>OmpSs/task_number.cfg</first>
+						<second>Task number</second>
+					</item>
+					<item>
+						<first>OmpSs/task_priority.cfg</first>
+						<second>Task priority</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>OpenMP</first>
+			<second>
+				<name>OpenMP</name>
+				<type>2</type>
+				<autoTypes>
+					<count>3</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAABKHkwM=
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAAWHkwM=
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAAaHkwM=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>12</count>
+					<item_version>0</item_version>
+					<item>
+						<first>OpenMP/OMP_parallel_constructs.cfg</first>
+						<second>In parallel construct</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_implicit_tasks.cfg</first>
+						<second>Implicit tasks in parallel constructs</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_implicit_tasks_profile.cfg</first>
+						<second>Implicit tasks profile</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_implicit_tasks_duration.cfg</first>
+						<second>Implicit tasks duration</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_implicit_tasks_duration_3DH.cfg</first>
+						<second>Histogram of implicit tasks duration</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_worksharing_constructs.cfg</first>
+						<second>Worksharing constructs</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_worksharings_duration.cfg</first>
+						<second>Worksharing constructs duration</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_worksharings_duration_3DH.cfg</first>
+						<second>Histogram of worksharing constructs duration</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_in_barrier.cfg</first>
+						<second>In barrier synchronization</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_in_critical.cfg</first>
+						<second>In critical synchronization</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_critical_profile.cfg</first>
+						<second>In critical synchronization profile</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_state_profile.cfg</first>
+						<second>Thread state profile (efficiency)</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>PAPI counters</first>
+			<second>
+				<name>PAPI counters</name>
+				<type>2</type>
+				<autoTypes>
+					<count>1</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAALLegAI=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>4</count>
+					<item_version>0</item_version>
+					<item>
+						<first>counters_PAPI/performance/IPC.cfg</first>
+						<second>IPC (instructions per cycle)</second>
+					</item>
+					<item>
+						<first>Counters/Frequency.cfg</first>
+						<second>Estimated core frequency</second>
+					</item>
+					<item>
+						<first>counters_PAPI/performance/2dh_useful_instructions.cfg</first>
+						<second>Histogram of useful instructions</second>
+					</item>
+					<item>
+						<first>counters_PAPI/performance/2dh_duration_IPC.cfg</first>
+						<second>Histogram of duration correlated with IPC</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>Resources</first>
+			<second>
+				<name>Resources</name>
+				<type>2</type>
+				<autoTypes>
+					<count>1</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAACFaYgI=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>3</count>
+					<item_version>0</item_version>
+					<item>
+						<first>General/views/executing_cpu.cfg</first>
+						<second>Executing core</second>
+					</item>
+					<item>
+						<first>General/views/node_id.cfg</first>
+						<second>Assigned nodes</second>
+					</item>
+					<item>
+						<first>General/analysis/mapping.cfg</first>
+						<second>Process mapping</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>Sampling</first>
+			<second>
+				<name>Sampling</name>
+				<type>2</type>
+				<autoTypes>
+					<count>1</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAIDDyQE=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>2</count>
+					<item_version>0</item_version>
+					<item>
+						<first>sampling+folding/2dp_sampled_function.cfg</first>
+						<second>Sampled function profile</second>
+					</item>
+					<item>
+						<first>sampling+folding/2dp_sampled_line.cfg</first>
+						<second>Sampled line profile</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>Useful</first>
+			<second>
+				<name>Useful</name>
+				<type>1</type>
+				<autoTypes>
+					<count>1</count>
+					<item_version>1</item_version>
+					<item>
+						<type>1</type>
+						<WorkspaceValue>
+AQAAAAEAAAA=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>1</count>
+					<item_version>0</item_version>
+					<item>
+						<first>General/views/instantaneous_parallelism.cfg</first>
+						<second>Instantaneous parallelism</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item>
+			<first>User functions</first>
+			<second>
+				<name>User functions</name>
+				<type>2</type>
+				<autoTypes>
+					<count>1</count>
+					<item_version>1</item_version>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAABOHkwM=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs>
+					<count>2</count>
+					<item_version>0</item_version>
+					<item>
+						<first>General/views/user_functions.cfg</first>
+						<second>User functions</second>
+					</item>
+					<item>
+						<first>General/analysis/uf_profile.cfg</first>
+						<second>User functions profile</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item class_id="2" tracking_level="0" version="0">
+			<first>OpenMP tasking</first>
+			<second class_id="3" tracking_level="0" version="2">
+				<name>OpenMP tasking</name>
+				<type>2</type>
+				<autoTypes class_id="4" tracking_level="0" version="0">
+					<count>6</count>
+					<item_version>1</item_version>
+					<item class_id="5" tracking_level="0" version="1">
+						<type>2</type>
+						<WorkspaceValue>
+AgAAABeHkwM=
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAABiHkwM=
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAHuHkwM=
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAHyHkwM=
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAABaHkwM=
+
+						</WorkspaceValue>
+					</item>
+					<item>
+						<type>2</type>
+						<WorkspaceValue>
+AgAAABmHkwM=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs class_id="6" tracking_level="0" version="0">
+					<count>6</count>
+					<item_version>0</item_version>
+					<item class_id="7" tracking_level="0" version="0">
+						<first>OpenMP/OMP_tasks/OMP_explicit_tasks.cfg</first>
+						<second>Explicit tasks function created and executed</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_tasks/OMP_explicit_tasks_2DH.cfg</first>
+						<second>Profile of explicit tasks creation and execution</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_tasks/OMP_explicit_tasks_duration.cfg</first>
+						<second>Explicit tasks executed duration</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_tasks/OMP_explicit_tasks_duration_3DH.cfg</first>
+						<second>Histogram of explicit tasks execution duration</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_tasks/OMP_taskwait.cfg</first>
+						<second>In taskwait construct</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_tasks/OMP_in_taskgroup.cfg</first>
+						<second>In taskgroup construct</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item class_id="2" tracking_level="0" version="0">
+			<first>OpenMP taskloop</first>
+			<second class_id="3" tracking_level="0" version="2">
+				<name>OpenMP taskloop</name>
+				<type>2</type>
+				<autoTypes class_id="4" tracking_level="0" version="0">
+					<count>1</count>
+					<item_version>1</item_version>
+					<item class_id="5" tracking_level="0" version="1">
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAB2HkwM=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs class_id="6" tracking_level="0" version="0">
+					<count>2</count>
+					<item_version>0</item_version>
+					<item class_id="7" tracking_level="0" version="0">
+						<first>OpenMP/OMP_tasks/OMP_taskloop.cfg</first>
+						<second>In taskloop construct</second>
+					</item>
+					<item>
+						<first>OpenMP/OMP_tasks/OMP_taskloop_profile.cfg</first>
+						<second>Taskloop profile</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+		<item class_id="2" tracking_level="0" version="0">
+			<first>Tareador</first>
+			<second class_id="3" tracking_level="0" version="2">
+				<name>Tareador</name>
+				<type>2</type>
+				<autoTypes class_id="4" tracking_level="0" version="0">
+					<count>1</count>
+					<item_version>1</item_version>
+					<item class_id="5" tracking_level="0" version="1">
+						<type>2</type>
+						<WorkspaceValue>
+AgAAAFsbAAA=
+						</WorkspaceValue>
+					</item>
+				</autoTypes>
+				<hintCFGs class_id="6" tracking_level="0" version="0">
+					<count>2</count>
+					<item_version>0</item_version>
+					<item class_id="7" tracking_level="0" version="0">
+						<first>Tareador/demo_view.cfg</first>
+						<second>Task type running on CPU</second>
+					</item>
+					<item>
+						<first>Tareador/profile_tasks_on_cpus.cfg</first>
+						<second>Profile of tasks assigned to cores</second>
+					</item>
+				</hintCFGs>
+			</second>
+		</item>
+	</workspaces>
+	<workspacesOrder class_id="8" tracking_level="0" version="0">
+		<count>14</count>
+		<item_version>0</item_version>
+		<item>Useful</item>
+		<item>MPI</item>
+		<item>OpenMP</item>
+		<item>OpenMP tasking</item>
+		<item>OpenMP taskloop</item>
+		<item>Tareador</item>
+		<item>OmpSs</item>
+		<item>PAPI counters</item>
+		<item>User functions</item>
+		<item>Call stack references</item>
+		<item>Resources</item>
+		<item>Clustering</item>
+		<item>Sampling</item>
+		<item>Burst mode</item>
+	</workspacesOrder>
+</workspace_manager>
+</boost_serialization>
+
