@@ -110,10 +110,16 @@ std::any CodeGenVisitor::visitDeclarations(AslParser::DeclarationsContext *ctx) 
 
 std::any CodeGenVisitor::visitVariable_decl(AslParser::Variable_declContext *ctx) {
   DEBUG_ENTER();
-  TypesMgr::TypeId   t1 = getTypeDecor(ctx->type());
-  std::size_t      size = Types.getSizeOfType(t1);
+  visit(ctx->type());
+  TypesMgr::TypeId t1 = getTypeDecor(ctx->type());
+  size_t size = 1; // Asumiendo que el tamaño es 1 por defecto
+  for (auto id : ctx->ID()) {
+    std::string ident = id->getText();
+    var v{ident, Types.to_string(t1), size};
+    // Aquí puedes agregar `v` a una lista o hacer lo que necesites con él
+  }
   DEBUG_EXIT();
-  return var{ctx->ID()->getText(), Types.to_string(t1), size};
+  return 0;
 }
 
 std::any CodeGenVisitor::visitStatements(AslParser::StatementsContext *ctx) {
