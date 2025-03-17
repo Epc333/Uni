@@ -16,6 +16,13 @@ vector<int> modelStack;
 uint indexOfNextLitToPropagate;
 uint decisionLevel;
 
+vector<vector<int>> occurList;
+vector<int> varCount;
+vector<int> varConflict;
+vector<int> varConflictCount;
+int conflictesTotal = 0, MAX_NUM = 100;
+
+
 
 void readClauses( ){
   // Skip comments
@@ -28,11 +35,21 @@ void readClauses( ){
   string aux;
   cin >> aux >> numVars >> numClauses;
   clauses.resize(numClauses);  
+  occurList.resize(2*numVars + 1);
+  varCount.resize(numVars + 1, 0);
+  varConflict.resize(numVars + 1, 0);
+  varConflictCount.resize(numVars + 1, 0);
+
   // Read clauses
-  for (uint i = 0; i < numClauses; ++i) {
+  // Omplir la llista OccurList
+  for (uint i = 0; i < numClauses; ++i){
     int lit;
-    while (cin >> lit and lit != 0) clauses[i].push_back(lit);
-  }    
+    while (cin >> lit and lit != 0) {
+      clauses[i].push_back(lit);
+      occurList[numVars + lit].push_back(i);
+      varCount[abs(lit)]++;
+    }
+  }
 }
 
 
@@ -53,21 +70,42 @@ void setLiteralToTrue(int lit){
 }
 
 
-bool propagateGivesConflict ( ) {
-  while ( indexOfNextLitToPropagate < modelStack.size() ) {
-    ++indexOfNextLitToPropagate;
-    for (uint i = 0; i < numClauses; ++i) {
+bool propagateGivesConflict() {
+  while (indexOfNextLitToPropagate < modelStack.size()) {
+    int literal = modelStack[indexOfNextLitToPropagate++];
+    for (uint i : occurList[numVars - literal]) {
       bool someLitTrue = false;
       int numUndefs = 0;
       int lastLitUndef = 0;
-      for (uint k = 0; not someLitTrue and k < clauses[i].size(); ++k){
-	int val = currentValueInModel(clauses[i][k]);
-	if (val == TRUE) someLitTrue = true;
-	else if (val == UNDEF){ ++numUndefs; lastLitUndef = clauses[i][k]; }
+      for (const int& clauseLit : clauses[i]) {
+        int val = currentValueInModel(clauseLit);
+        if (val == TRUE) {
+          someLitTrue = true;
+          break;
+        } else if (val == UNDEF) {
+          ++numUndefs;
+          lastLitUndef = clauseLit;
+        }
       }
-      if (not someLitTrue and numUndefs == 0) return true; // conflict! all lits false
-      else if (not someLitTrue and numUndefs == 1) setLiteralToTrue(lastLitUndef);	
-    }    
+      /*for (uint k = 0; not someLitTrue and k < clauses[i].size(); ++k) {
+        int val = currentValueInModel(clauses[i][k]);
+        if (val == TRUE) someLitTrue = true;
+        else if (val == UNDEF) { ++numUndefs; lastLitUndef = clauses[i][k]; }
+      }*/
+      if (not someLitTrue and numUndefs == 0) {
+        ++conflictesTotal;
+        if (conflictesTotal % MAX_NUM == 0) {
+          for (uint i = 1; i <= numVars; ++i) {
+            varConflictCount[i] /= 2;
+          }
+        }
+        for (const int& lit : clauses[i]) {
+          varConflictCount[abs(lit)]++;
+        }
+        return true; // conflict! all lits false
+      }
+      else if (not someLitTrue and numUndefs == 1) setLiteralToTrue(lastLitUndef);
+    }
   }
   return false;
 }
@@ -92,9 +130,15 @@ void backtrack(){
 
 // Heuristic for finding the next decision literal:
 int getNextDecisionLiteral(){
-  for (uint i = 1; i <= numVars; ++i) // stupid heuristic:
-    if (model[i] == UNDEF) return i;  // returns first UNDEF var, positively
-  return 0; // reurns 0 when all literals are defined
+  int max = -1;
+  int variable = 0;
+  for (uint i = 1; i <= numVars; ++i){
+    if (model[i] == UNDEF and varCount[i] + varConflictCount[i] > max){
+      max = varCount[i] + varConflictCount[i];
+      variable = i;
+    }
+  }
+  return variable;
 }
 
 void checkmodel(){
