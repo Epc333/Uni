@@ -1,5 +1,4 @@
-import Distribution.Simple.Utils (xargs)
-import Distribution.Simple (majorBoundVersion)
+
 insert :: [Int] -> Int -> [Int]
 
 insert [] x = [x]

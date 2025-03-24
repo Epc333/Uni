@@ -4,6 +4,15 @@
 
 Solució:
 
-(+|-)? (d+ (. d*)? | . d+) ((e)? (+ | -)? d+)?
+(+|-)? (d+ (. d+)? | . d+) ((e)? (+ | -)? d+)?
 
 d = [0-9]
+
+
+MANTDOT: SIGN? DIGIT* '.' DIGIT+
+MANTWOUTDOT: SIGN? DIGIT+
+DIGIT: [0-9]
+SIGN: ('+' | '-')
+EXPONENT: ('e' | 'E') SIGN? DIGIT +
+
+FLOAT: MANTDOT EXPONENT? | MANTWOUT EXPONENT
