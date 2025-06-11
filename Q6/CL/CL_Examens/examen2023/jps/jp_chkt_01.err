@@ -1,0 +1,3 @@
+Line 9:16 error: Operator 'not' with incompatible types.
+Line 12:16 error: Assignment with incompatible types.
+Line 20:8 error: Identifier 'q' is undeclared.

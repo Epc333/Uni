@@ -1,0 +1,14 @@
+Line 9:3 error: Foreach with incompatible variable and array elements.
+Line 11:14 error: Identifier 'x' is undeclared.
+Line 12:16 error: Identifier 'x' is undeclared.
+Line 16:3 error: Foreach with incompatible variable and array elements.
+Line 18:22 error: Identifier 'x' is undeclared.
+Line 23:3 error: 'foreach' requires an array parameter.
+Line 24:14 error: Identifier 'x' is undeclared.
+Line 24:19 error: Identifier 'y' is undeclared.
+Line 27:6 error: Foreach with incompatible variable and array elements.
+Line 28:9 error: Identifier 'a' is undeclared.
+Line 45:16 error: Operator 'not' with incompatible types.
+Line 46:15 error: Assignment with incompatible types.
+Line 46:22 error: Parameter #1 with incompatible types in call to 'wasa'.
+Line 52:8 error: Identifier 'q' is undeclared.

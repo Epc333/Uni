@@ -1,0 +1,12 @@
+Line 15:10 error: Operator '+' with incompatible types.
+Line 28:10 error: Identifier 'p' is undeclared.
+Line 30:2 error: Identifier 'c' is undeclared.
+Line 32:6 error: Reduce requires a proper function (T x T -> T).
+Line 33:2 error: Identifier 'y' is undeclared.
+Line 33:6 error: Reduce requires a proper function (T x T -> T).
+Line 34:6 error: 'reduce' requires an array parameter.
+Line 36:4 error: Assignment with incompatible types.
+Line 37:4 error: Assignment with incompatible types.
+Line 37:6 error: Array access to a non array operand.
+Line 37:8 error: Identifier 'i' is undeclared.
+Line 37:11 error: Operator '+' with incompatible types.

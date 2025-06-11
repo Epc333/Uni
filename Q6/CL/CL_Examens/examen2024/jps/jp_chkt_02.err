@@ -1,0 +1,4 @@
+Line 14:2 error: Incompatible arguments in swap.
+Line 15:2 error: Incompatible arguments in swap.
+Line 18:10 error: Array access to a non array operand.
+Line 19:7 error: Identifier 'zzzz' is undeclared.

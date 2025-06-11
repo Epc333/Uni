@@ -1,0 +1,8 @@
+Line 17:10 error: Identifier 'p' is undeclared.
+Line 20:2 error: Identifier 'c' is undeclared.
+Line 21:8 error: Identifier 'c' is undeclared.
+Line 23:4 error: Assignment with incompatible types.
+Line 24:4 error: Assignment with incompatible types.
+Line 24:6 error: Array access to a non array operand.
+Line 24:8 error: Identifier 'i' is undeclared.
+Line 24:11 error: Operator '+' with incompatible types.

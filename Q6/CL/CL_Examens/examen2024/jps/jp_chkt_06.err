@@ -1,0 +1,4 @@
+Line 6:7 error: Operator '>' with incompatible types.
+Line 10:6 error: Array access with non integer index.
+Line 13:6 error: Array access to a non array operand.
+Line 13:14 error: Identifier 'k' is undeclared.

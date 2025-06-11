@@ -1,0 +1,9 @@
+Line 11:11 error: Identifier 'p' is undeclared.
+Line 12:17 error: Identifier 'p' is undeclared.
+Line 17:7 error: Incompatible value in switch in case 'false'.
+Line 18:12 error: Assignment with incompatible types.
+Line 18:27 error: Operator '-' with incompatible types.
+Line 20:12 error: Assignment with incompatible types.
+Line 20:16 error: Operator '>' with incompatible types.
+Line 21:7 error: Incompatible value in switch in case ''a''.
+Line 22:11 error: Identifier 'k' is undeclared.
