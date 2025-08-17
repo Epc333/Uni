@@ -1,0 +1,112 @@
+         CLIPS (6.30 3/17/15)
+CLIPS> CLIPS> Defining defclass: Bebida
+Defining defclass: Vino
+Defining defclass: Epoca
+Defining defclass: Ingrediente
+Defining defclass: Plato
+Defining definstances: init-instances
+
+[CSTRCPSR1] WARNING: Redefining defmodule: MAIN
+Defining defmodule: input
+Defining defmodule: abstraccion
+Defining defmodule: asociacionHeuristica
+Defining defmodule: refinamiento
+Defining defmodule: impresionSolucion
+Defining deftemplate: InfoEvento
+Defining deftemplate: InfoEventoA
+Defining deftemplate: SolAbstracta
+Defining deftemplate: CandidateMenu
+Defining deftemplate: SelectedMenu
+Defining deftemplate: CandidateBebida
+Defining deftemplate: SelectedBebida
+Defining deftemplate: CombinedMenu
+Defining deffunction: selectorOpcion
+Defining deffunction: introEnInterval
+Defining deffunction: entradaValida
+Defining deffunction: selectorOpciones
+Defining deffunction: readNombre
+Defining deffunction: readLocalidad
+Defining deffunction: readTipoEvento
+Defining deffunction: readFecha
+Defining deffunction: readPresupuesto
+Defining deffunction: readNumComensales
+Defining deffunction: readDietas
+Defining deffunction: readAlergias
+Defining deffunction: readAlcohol
+Defining deffunction: mapLocalidadToArea
+Defining deffunction: mapFechaToEpoca
+Defining deffunction: mapTipoEventoToTipoPlatos
+Defining deffunction: mapPrecioPlatos
+Defining deffunction: mapComplejidadPlatos
+Defining deffunction: solTemperaturaMenu
+Defining deffunction: solComplejidadMenu
+Defining deffunction: scorePlato
+Defining deffunction: scoreBebida
+Defining deffunction: lista-unica
+Defining deffunction: ingredientesRepetidos
+Defining deffunction: top3CandidatesPorTipo
+Defining deffunction: top3CandidatesBebida
+Defining deffunction: maxMenuFact
+Defining deffunction: minMenuFact
+Defining deffunction: midMenuFact
+Defining deffunction: highestScoreForTotal
+Defining defrule: init +j+j
+Defining defrule: vuelve-de-input +j
+Defining defrule: init-a-abstraccion +j
+Defining defrule: vuelve-de-abstraccion +j
+Defining defrule: init-a-asociacionHeuristica +j
+Defining defrule: vuelve-de-asociacionHeuristica +j
+Defining defrule: init-a-refinamiento +j
+Defining defrule: vuelve-de-refinamiento +j
+Defining defrule: init-a-impresion +j
+Defining defrule: vuelve-de-impresion +j
+Defining defrule: fin +j
+Defining defrule: readInfoEvento +j
+Defining defrule: absInfoEventoA +j+j+j
+Defining defrule: defSolAbstracta +j+j+j
+Defining defrule: genera-candidatos +j+j+j+j
+Defining defrule: genera-candidatos-bebidas =j=j+j+j
+Defining defrule: select-principales-top3 =j+j+j
+Defining defrule: select-segundos-top3 =j+j+j
+Defining defrule: select-postres-top3 =j+j+j
+Defining defrule: select-bebidas-top3 =j+j+j
+Defining deftemplate: PrintedCombinedMenu
+Defining defrule: combine-selected +j+j+j+j+j+j
+Defining defrule: print-menus +j+j+j+j
+TRUE
+CLIPS> CLIPS> --Sistema de cátering RicoRico--
+Bienvenido al sistema de planificación de eventos.
+Por favor, introduce la información del evento.
+Introduce el nombre del evento: 
+Introduce el pais del evento: 
+Introduce el tipo de evento (boda, cumpleaños, conferencia, etc.): 
+Introduce la fecha del evento (dd/mm/aaaa): 
+Introduce el presupuesto por persona del evento: 
+Introduce el número de comensales: 
+Selecciona dietas (elige de: vegetariana, vegana, sin-gluten, sin-lactosa, sin-restricciones). Escribe fin para terminar:
+Introduce alergias una a una; escribe 'fin' cuando termines.
+Alergia (o fin): 
+¿Quieres que la bebida contenga alcohol? (si/no/indiferente): 
+
+Aunque no sea la bebida principal el agua siempre esta disponible
+*** MENÚ MÁS CARO ***
+ Total: 35.5 $
+  P: Ensalada Mixta
+  S: Salchicha con Patatas Asadas
+  Po: Parfait de Coco y Nueces
+  B: Bourbon
+
+*** MENÚ INTERMEDIO ***
+ Total: 32.5 $
+  P: Ensalada de Patata
+  S: HotDog GlutenFree
+  Po: Mousse de Aguacate y Leche de Coco
+  B: Bourbon
+
+*** MENÚ MÁS BARATO ***
+ Total: 29.0 $
+  P: Ensalada de Patata
+  S: Milanesa con patatas
+  Po: Macedonia de Frutas Frescas
+  B: Cava
+CLIPS> 

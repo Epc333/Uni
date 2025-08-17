@@ -1,0 +1,237 @@
+@prefix : <http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/> .
+
+<http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/asiste
+:asiste rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf owl:topObjectProperty .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/en_epoca
+:en_epoca rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          rdfs:domain :Plato ;
+          rdfs:range :Epoca .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/sigue_dieta
+:sigue_dieta rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf owl:topObjectProperty ;
+             rdfs:range :Dieta .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/tiene_bebida
+:tiene_bebida rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf owl:topObjectProperty ;
+              rdfs:range :Bebida .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/tiene_ingrediente
+:tiene_ingrediente rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf owl:topObjectProperty ;
+                   rdfs:domain :Plato ;
+                   rdfs:range :Ingrediente .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/tiene_menu
+:tiene_menu rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf owl:topObjectProperty .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/tiene_plato
+:tiene_plato rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf owl:topObjectProperty ;
+             rdfs:range :Plato .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Alcohol
+:Alcohol rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf owl:topDataProperty ;
+         rdfs:domain :Bebida ;
+         rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/AptoDiabetico
+:AptoDiabetico rdf:type owl:DatatypeProperty ;
+               rdfs:subPropertyOf owl:topDataProperty ;
+               rdfs:domain :Bebida ,
+                           :Ingrediente ;
+               rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Formalidad
+:Formalidad rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf owl:topDataProperty ;
+            rdfs:domain :Bebida ,
+                        :Plato ;
+            rdfs:range xsd:integer .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Gluten
+:Gluten rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf owl:topDataProperty ;
+        rdf:type owl:FunctionalProperty ;
+        rdfs:domain :Ingrediente ;
+        rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Halal
+:Halal rdf:type owl:DatatypeProperty ;
+       rdfs:subPropertyOf owl:topDataProperty ;
+       rdfs:domain :Ingrediente ;
+       rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Lactosa
+:Lactosa rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf owl:topDataProperty ;
+         rdf:type owl:FunctionalProperty ;
+         rdfs:domain :Ingrediente ;
+         rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Localidad
+:Localidad rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf owl:topDataProperty ;
+           rdf:type owl:FunctionalProperty ;
+           rdfs:domain :Plato ;
+           rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Nombre
+:Nombre rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf owl:topDataProperty ;
+        rdf:type owl:FunctionalProperty ;
+        rdfs:domain :Bebida ,
+                    :Dieta ,
+                    :Epoca ,
+                    :Ingrediente ,
+                    :Plato ;
+        rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Precio
+:Precio rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf owl:topDataProperty ;
+        rdf:type owl:FunctionalProperty ;
+        rdfs:domain :Bebida ,
+                    :Plato ;
+        rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Temperatura
+:Temperatura rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf owl:topDataProperty ;
+             rdfs:domain :Bebida ;
+             rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/TiempoPreparacion
+:TiempoPreparacion rdf:type owl:DatatypeProperty ;
+                   rdfs:subPropertyOf owl:topDataProperty ;
+                   rdf:type owl:FunctionalProperty ;
+                   rdfs:domain :Plato ;
+                   rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Tipo
+:Tipo rdf:type owl:DatatypeProperty ;
+      rdfs:subPropertyOf owl:topDataProperty ;
+      rdfs:domain :Plato ;
+      rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Vegano
+:Vegano rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf owl:topDataProperty ;
+        rdf:type owl:FunctionalProperty ;
+        rdfs:domain :Ingrediente ;
+        rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Vegetariano
+:Vegetariano rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf owl:topDataProperty ;
+             rdf:type owl:FunctionalProperty ;
+             rdfs:domain :Ingrediente ;
+             rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Zona
+:Zona rdf:type owl:DatatypeProperty ;
+      rdfs:subPropertyOf owl:topDataProperty ;
+      rdfs:domain :Bebida ;
+      rdfs:range xsd:string .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Bebida
+:Bebida rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Dieta
+:Dieta rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Epoca
+:Epoca rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Ingrediente
+:Ingrediente rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Plato
+:Plato rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Bistec
+:Bistec rdf:type owl:NamedIndividual ,
+                 :Plato ;
+        :Gluten "false"^^xsd:boolean ;
+        :Lactosa "false"^^xsd:boolean ;
+        :Localidad "España" ;
+        :Nombre "Bistec" ;
+        :Precio 16 ;
+        :TiempoPreparacion 1 ;
+        :Vegano "false"^^xsd:boolean ;
+        :Vegetariano "false"^^xsd:boolean .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Croquetas_de_Pollo
+:Croquetas_de_Pollo rdf:type owl:NamedIndividual ,
+                             :Plato .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Ensalada
+:Ensalada rdf:type owl:NamedIndividual ,
+                   :Plato .
+
+
+###  http://www.semanticweb.org/teixis/ontologies/2025/3/RicoRico/Parrillada_de_verduras
+:Parrillada_de_verduras rdf:type owl:NamedIndividual ,
+                                 :Plato .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
