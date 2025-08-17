@@ -1,0 +1,2 @@
+Line 9:0 error: There is no 'main' function properly declared.
+There are semantic errors: no code generated.
