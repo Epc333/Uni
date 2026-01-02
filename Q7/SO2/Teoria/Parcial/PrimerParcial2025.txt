@@ -1,0 +1,225 @@
+1.
+	S'ha de crear durant el procés d'inicialització, abans que s'inici el primer procés d'usuari.
+2.
+	Els handlers d'interrupcions, excepcions i el punt d'entrada de les crides al sistema.
+3.
+	// Assumeix que InitTP és la taula de pàgines d'Init (obtinguda amb get_PT) [7]
+	// Assumeix que PAG_LOG_KERNEL_CODE és la pàgina lògica on va el codi del kernel compartit
+	// Assumeix que FRAME_KERNEL_CODE és el frame físic on resideix el codi
+	set_ss_page(InitTP, PAG_LOG_KERNEL_CODE, FRAME_KERNEL_CODE);
+4.
+	La finalitat dels wrappers és proporcionar una capa d'abstracció per a l'usuari, oferint una manera fàcil i portable d'utilitzar les crides al sistema. Els wrappers gestionen els detalls de baix nivell, com ara l'identificació del servei (usant EAX), la generació de la trap, el pas de paràmetres, i la gestió del resultat retornat pel kernel, utilitzant la variable errno per codificar errors.
+5. 
+	Amb la variable errno, o amb el registre %eax
+6. 
+	Per començar, tenir un únic punt d'entrada és molt més segur, ja que només has de comprovar que tots els parametres i crides son correctes per invocar-lo. A part, simplifica les coses, ja que totes les crides a sistemes han de passar per un so handler.
+7. 
+	No, ja que només existeix un registre on guardi l'adreça del sysenter
+8. 
+	Dos, el Handler de les Crides al Sistema i el Handlers d'Interrupcions i Excepcions.
+9.
+	Pq necessita manipular directament els registres del processador i la pila, de tal manera que en C no es pot fer. A més en assemblador es poden fer servir instruccions privilegiades com iret.
+10.
+	IDT, GDT i TSS
+11.
+	unsigned int fisica_IDT = (unsigned int) IDT;
+12.
+	En ZeOS l'espai d'adreces té un mapatge directe on l'adreça és igual a l'adreça física.
+13.
+	El page fault és causat pel fet que el codi del kernel (el handler) s'intenta executar mentre el registre CR3 encara apunta a la taula de pàgines de l'usuari, la qual ha estat netejada del mapeig del kernel com a mesura de seguretat.
+14.
+	No, ja que sobreescriuria el %eax del proces, i el seu valor es perdria
+15.
+	No, ja que saltaria un page fault en el SAVE ALL, ja que la pila no està mapejada
+16.
+	No canvien, ja que tots els handlers segueixen una rutina similar a SAVE ALL -> funció -> RESTORE ALL -> IRET
+17.
+	SS
+	ESP
+	EFLAGS
+	CS
+	EIP
+18.
+	El registre ESP del mode usuari, ja que ja esta en pila.
+19.
+	pushl %eax   // 1. Guarda el valor 	d'usuari d'EAX (preserva context)
+	movl OSTPaddress, %eax   // 2. Carrega l'adreça 	física de la OSTP a EAX [12]
+	movl %eax, %cr3          // 3. Canvia CR3 per 	utilitzar la OSPT (evita page fault a SAVE_ALL)
+	popl %eax                // 4. Restaura el valor 	original d'EAX (preserva context)
+20.
+	És una direcció física, ja que la MMU ha de poder accedir sense fer una traducció prèvia.
+21. 
+	void task_switch(struct task_struct *new) {	
+	    page_table_entry *new_dir = get_DIR(new);
+	    set_CR3(new_dir); 
+	 	update_TSS_esp0(new); 
+	    task_switch_low_handler(new); 
+	}
+22.
+	Queda igual
+23.
+	Elimina la necessitat de canviar el `CR3` durant el canvi de context entre processos d'usuari, ja que la part del nucli és la mateixa per a tots.
+24.
+	La part de l'espai d'adreces que correspon al mapeig del nucli, ja que el fill obtindrà la seva pròpia taula de pàgines d'usuari sense aquests mapejos.
+25.
+	for (int i = 0; i < NUM_PAG_DATA; i++) {
+    LA_i = PAG_LOG_INIT_DATA + i;
+
+    set_ss_page(TPP, PAG_LOG_TEMP, pf[i]);
+    src_ptr = (unsigned char *)(LA_i * PAGE_SIZE);
+    dest_ptr = (unsigned char *)(PAG_LOG_TEMP * PAGE_SIZE);
+    copy_page(src_ptr, dest_ptr); // Fent una còpia de 4KB
+    del_ss_page(TPP, PAG_LOG_TEMP); 
+    set_ss_page(TPC, LA_i, pf[i]); [6]
+}
+
+26. 
+	No, ja que quan copies del pare ja les elimines
+27.
+	Ja que s'encarrega de finalitzar la creació del fill, com ara posar al eax un 0, i permet el fill començar a executar codi en mode usuari.
+28.
+	No necessariament, es pot manipular directament la pila de sistemes del fill
+29.
+
+30.
+	Mida pàgina = 4 KB. Entrada = 4 bytes. Entrades/Directori o TP = 1024
+.
+	1. Cost d'un sol nivell (Dense, 4GB LA): Es necessiten 220 entrades per taula (4 GB / 4 KB). Això implica una taula de 4 MB per procés.
+	    ◦ Cost total per a 10 processos: 10×4 MB=40 MB.
+	2. Cost de dos nivells (Sparse, amb OSPT): Només es mapeja el codi/dades d'usuari (1 MB) i el kernel (10 MB).
+	    ◦ Kernel (OSPT compartida): 10 MB utilitzen 2560 pàgines. Requereix 3 TP + 1 DIR. Total: 4×4 KB=16 KB (Compartit).
+	    ◦ Usuari (Per procés): 1 MB utilitza 256 pàgines. Requereix 1 TP + 1 DIR. Total per procés: 2×4 KB=8 KB.
+	    ◦ Cost total per a 10 processos: 10×8 KB+16 KB=96 KB.
+	Estalvi de memòria: L'estalvi és: 40 MB−96 KB. 40,960 KB−96 KB=40,864 KB
+31. 
+	Va més lent perquè la mitigació implementada requereix que el registre CR3 es canviï cada vegada que s'entra al mode kernel i quan se'n surt. L'acció de canviar el registre CR3 mitjançant la funció set_CR3 provoca una invalidació total de la TLB. Aquesta invalidació freqüent obliga el processador a tornar a carregar les traduccions d'adreces des de la memòria principal molt sovint, augmentant la latència d'accés a memòria i reduint dràsticament el rendiment del sistema
+
+I. OSPT i Mapeig del Kernel
+
+P1. Quan s'ha de crear l'OSPT?
+    L'OSPT s'ha de crear durant el procés d'inicialització del sistema, un cop s'ha passat a Mode Protegit. Ha d'estar a punt abans que s'iniciï el primer procés d'usuari (Init) [1, 2].
+
+P2. Quina part del codi del kernel s'ha de mapejar sempre en la taula de pàgines d'usuari?
+    És el codi necessari per a l'entrada ràpida al sistema, típicament la porció de la **vsyscall_page** [3]. Aquesta pàgina conté codi que permet invocar la crida al sistema des d'usuari [4].
+
+P3. Posa un exemple de codi que mapegi una de les funcions de kernel de la pregunta anterior en la taula de pàgines del procés Init (InitTP).
+    set_ss_page(InitTP, PAG_LOG_KERNEL_CODE, FRAME_KERNEL_CODE); [5, 6].
+    (Això assigna un frame físic al codi del kernel dins de la taula de pàgines d'Init [5, 6]).
+
+II. Wrappers i Punts d'Entrada
+
+P4. Quina és la finalitat dels wrappers?
+    La finalitat dels *wrappers* és proporcionar una capa d'abstracció per a l'usuari, oferint una manera fàcil i portable d'utilitzar les crides al sistema [7]. Són responsables de: gestionar el pas de paràmetres (p. ex., en registres com EBX, ECX, EDX) [8], identificar la crida (p. ex., amb EAX) [8], generar la *trap* [7], i retornar el resultat utilitzant la variable **errno** per codificar errors [7].
+
+P5. De quines dues formes es poden retornar resultats des del kernel als *wrappers*?
+    1. Mitjançant el **registre EAX**, que conté el codi d'error [7].
+    2. Mitjançant la variable **errno**, la qual el *wrapper* utilitza per codificar el tipus d'error i retornar -1 a l'usuari [7].
+
+P6. Quins avantatges ofereix el fet de tenir un únic punt d'entrada al sistema enfront de tenir diversos?
+    L'avantatge principal és que **evita la limitació per al nombre potencial de crides al sistema (*syscalls*)** [9]. En utilitzar un sol punt d'entrada (p. ex., `INT 0x80`), l'identificador del servei es passa amb un paràmetre addicional, típicament el registre **EAX** [8].
+
+P7. És compatible la instrucció sysenter amb tenir més d'un únic punt d'entrada?
+    **No**. `sysenter` és un mecanisme ràpid dissenyat per a un únic punt d'entrada [9, 10], l'adreça del qual es guarda en un registre de control (`SYSENTER_EIP_MSR`) [3, 8].
+
+III. Modificació de Handlers i Pila
+
+P8. Quants *handlers* haurem de modificar en un sistema operatiu amb un únic punt d'entrada i que s'executa en una màquina compatible amb X86?
+    **Dos** tipus: el **Handler de les Crides al Sistema** (per l'únic punt d'entrada) i els **Handlers genèrics d'Interrupcions i Excepcions de Maquinari** (com la interrupció de rellotge), ja que tots gestionen la transició d'usuari a kernel [11, 12].
+
+P9. Per què el *handler* ha d'escriure's en assemblador?
+    Perquè és necessari per a la **manipulació directa dels registres de la CPU i la pila** [13]. Això permet el **salvament i restauració del context de maquinari** [14, 15], i l'execució d'**instruccions privilegiades** com **IRET** [16, 17].
+
+P10. En produir-se una interrupció, quines estructures *hardware* són accedides abans d'executar la primera instrucció del *handler*?
+    La **Taula de Descriptors d'Interrupcions (IDT)** [10, 18], el **Segment d'Estat de Tasca (TSS)**, i indirectament, la **Taula de Descriptors Globals (GDT)**. El processador utilitza el `IDTR` i el `GDTR`/`TR` per localitzar aquestes estructures i obtenir l'adreça de la pila del kernel (`esp0`) [18].
+
+P11. Escriu el codi necessari per calcular la direcció física de una de les estructures *hardware* anteriors.
+    unsigned int fisica_IDT = (unsigned int) IDT; [19].
+    (Assumint que la variable `IDT` conté l'adreça lògica i s'utilitza mapeig idèntic [19]).
+
+P12. Com és possible que en el codi de ZeOS no s'hagin de calcular les direccions físiques...?
+    Perquè la porció del kernel de l'espai d'adreces lògiques està configurada amb **mapeig idèntic** [19]. Per tant, l'adreça lògica de les estructures de sistema coincideix amb la seva adreça física [13].
+
+P13. Què és el que causa aquest *page fault*?
+    El *page fault* (excepció 14) [20] es causa perquè el registre **CR3 encara apunta a la taula de pàgines de l'usuari**, la qual ha estat netejada del mapeig del kernel (mitigació Meltdown). Per tant, l'intent d'executar el codi del kernel (`SAVE_ALL`) falla la traducció de l'adreça lògica a física [17, 19].
+
+P14. Es pot posar el codi de la funció `set_cr3` abans del `SAVE_ALL`?
+    **No**, ja que la implementació original de `set_cr3` utilitza el registre **%EAX** [17, 21]. Si es posa abans de `SAVE_ALL`, **sobreescriuria el valor del %EAX d'usuari**, perdent part del context [22].
+
+P15. Es pot posar el codi de la funció `set_cr3` després del `SAVE_ALL`?
+    **No**, ja que el *page fault* ja s'ha produït a la primera instrucció de `SAVE_ALL` (Pregunta 13) [17, 23], i la solució seria inútil.
+
+P16. Canvien les respostes de les 2 preguntes anteriors si s'aplica `set_cr3` al *handler* de les crides al sistema en comptes de al de la interrupció de rellotge?
+    **No canvien** [22]. El problema és el mateix per a qualsevol entrada al sistema des del mode usuari a causa de la transició de modes i la taula de pàgines activa [21].
+
+P17. Dibuixa la pila de sistema abans de la primera instrucció del *handler*.
+    El *hardware* apila automàticament el context mínim de l'usuari a la pila del kernel, amb les dades de l'usuari [15]:
+    | SS | ESP | EFLAGS | CS | EIP | (Del fons al top de la pila).
+
+P18. Quin registre és i per què es pot utilitzar de forma temporal amb tota seguretat?
+    El registre és el **%EAX** (o qualsevol GPR) [21]. Es pot utilitzar amb seguretat perquè, tot i que conté context d'usuari, es pot **guardar i restaurar manualment a la pila** mitjançant `pushl` i `popl` per preservar el seu valor d'usuari abans de ser modificat [21, 22].
+
+P19. Reescríu la funció `set_cr3` per a que es pugui executar abans de `SAVE_ALL`...
+    ```assembly
+    pushl %eax               // 1. Guarda el valor d'usuari d'EAX (preserva context) [22]
+    movl OSTPaddress, %eax   // 2. Carrega l'adreça física de la OSPT a EAX [17]
+    movl %eax, %cr3          // 3. Canvia CR3 per utilitzar la OSPT [17]
+    popl %eax                // 4. Restaura el valor original d'EAX [22]
+    ```
+
+IV. Memòria i Processos
+
+P20. OSTPaddress és una direcció lògica o física?
+    **És una direcció física** [23]. El registre `CR3` ha de contenir l'adreça física del Directori de Pàgines, ja que el processador utilitza aquesta adreça directament sense traducció [17].
+
+P21. Escriu el codi de `task_switch` abans d'implementar aquest canvi en la taula de pàgines.
+    ```c
+    void task_switch(struct task_struct *new) {
+        page_table_entry *new_dir = get_DIR(new); [24]
+        set_CR3(new_dir); // Carrega la taula de pàgines amb mapeig de kernel [24]
+        // update_TSS_esp0(new); // Actualització de la pila kernel
+        // task_switch_low_handler(new); // Salt a l'assemblador
+    }
+    ```
+
+P22. Com s'ha de modificar el codi de `task_switch` amb la nova implementació?
+    **El codi d'alt nivell (C) queda igual** [23]. La funció manté la seva tasca de carregar el directori de pàgines del nou procés amb `set_CR3` [24]. La modificació és implícita en el fet que la taula de pàgines `new_dir` ja no conté el mapeig complet del kernel.
+
+P23. A part de millorar la seguretat..., aquest canvi suposa alguna altra millora...?
+    Sí. L'ús d'una OSPT única facilita l'**estalvi de memòria** si el sistema de paginació és multinivell [12, 25], ja que s'evita duplicar les taules de pàgines del kernel per a cada procés [26].
+
+P24. Quina part de l'espai de direccions del procés no s'hereta de pare a fill amb aquesta nova implementació?
+    La part que no s'hereta és el **mapeig complet de l'espai d'adreces lògiques del kernel** [23, 27].
+
+P25. Escríu el bucle de còpia de la zona de *data+stack*...
+    ```c
+    for (int i = 0; i < NUM_PAG_DATA; i++) {
+        LA_i = PAG_LOG_INIT_DATA + i;
+        set_ss_page(TPP, PAG_LOG_TEMP, pf[i]); // Mapeig temporal a la TP del Pare (TPP) [28]
+        src_ptr = (unsigned char *)(LA_i * PAGE_SIZE); // Adreça lògica del pare
+        dest_ptr = (unsigned char *)(PAG_LOG_TEMP * PAGE_SIZE); // Adreça lògica temporal
+        copy_page(src_ptr, dest_ptr);
+        del_ss_page(TPP, PAG_LOG_TEMP); // Elimina el mapeig temporal del Pare [6]
+        set_ss_page(TPC, LA_i, pf[i]); // Mapeig permanent a la TP del Fill (TPC) [6]
+    }
+    ```
+
+P26. S'ha de fer, després del bucle anterior, un *flush* del TLB...?
+    **No** [28]. La necessitat d'un *flush* complet s'evita perquè el mapeig temporal es va eliminar amb `del_ss_page` [6] i es suposa que l'adreça lògica temporal (`PAG_LOG_TEMP`) no és utilitzada pel procés d'usuari, o bé que l'entrada a la TLB es va invalidar amb el `del_ss_page` a la taula del pare (TPP) [29].
+
+P27. Per què interessa que s'executi `ret_from_fork`?
+    Perquè aquesta rutina del kernel s'encarrega d'ajustar el context del fill per: **posar el registre EAX a 0** (el valor de retorn de `fork` per al fill) i saltar al mode usuari mitjançant `IRET` [2, 30].
+
+P28. Amb la nova implementació de les taules de pàgines, se segueix necessitant `ret_from_fork`?
+    **No necessariament** [31]. Es pot aconseguir el mateix efecte manipulant directament la pila de sistemes del fill (que conté el context heretat del pare) per sobrescriure el valor guardat d'EAX amb 0 i l'EIP amb l'adreça de retorn d'usuari [30].
+
+P29. Dibuixa el contingut de la pila de sistema del procés fill en `sys_fork` indicant quines modificacions s'han de fer...
+    (La resposta és un dibuix de la pila, però descrit textualment, s'ha de mostrar el context de maquinari amb aquestes dues modificacions [30]):
+    1. El valor guardat del registre **EAX** (dins de la zona de `SAVE_ALL`) ha de ser sobrescrit a **0x00000000**.
+    2. El valor de **EIP** (apilat pel *hardware*) ha de mantenir l'**adreça de retorn d'usuari** del *wrapper* de `fork` (és a dir, el punt just després de la `INT` o `sysenter`).
+
+P30. Quanta memòria ens estalviem ocupada per taules de pàgines...?
+    L'estalvi de memòria és de **40,864 KB** [26].
+    (Càlcul: 10 processos * 4 MB/procés (un sol nivell) = 40 MB. Cost amb OSPT: 16 KB (OSPT compartida) + 10 * 8 KB (Usuari) = 96 KB. Estalvi: 40 MB - 96 KB = 40,864 KB [26]).
+
+P31. Per què va més lent el sistema?
+    Va més lent perquè la mitigació implementada requereix que el registre **C

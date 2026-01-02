@@ -1,0 +1,183 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[catalan]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{url}
+\usepackage{float}
+\usepackage{tocloft}
+
+% Afegir punts a les seccions de la taula de continguts
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=blue,
+}
+
+\title{Anàlisi de l'evolució i estabilitat del kernel Linux}
+\author{Eudald Pizarro Camí}
+\date{Desembre de 2025}
+
+\begin{document}
+
+\pagenumbering{gobble}
+\maketitle
+
+\newpage 
+
+\pagenumbering{arabic}
+\tableofcontents
+
+\newpage 
+
+\begin{abstract}
+Aquest treball examina l'afirmació del professor Anton Baka Baka que sosté que ``Linux és un kernel estable que no aporta noves modificacions''. S'analitza el context actual de Linux, la seva rellevància en diferents àmbits tecnològics, i es presenten dades quantitatives sobre l'activitat de desenvolupament del kernel. Mitjançant estadístiques de commits, freqüència de versions i exemples de tecnologies recents com Rust i eBPF, es demostra que l'estabilitat del sistema no implica una aturada en el desenvolupament. Les conclusions indiquen que Linux manté un procés d'innovació constant compatible amb la seva estabilitat operativa.
+\end{abstract}
+
+\newpage
+
+\section{Introducció}
+
+Per a analitzar l'afirmació proposada, primer és necessari contextualitzar què és Linux i la seva rellevància actual.
+
+Linux és un sistema operatiu de codi obert. Tal com defineix IBM \cite{ibm_open_source}, aquest model permet que qualsevol persona pugui utilitzar, modificar i contribuir al programari. Aquesta filosofia implica que el manteniment del codi és un esforç col·laboratiu de la comunitat d'usuaris i desenvolupadors.
+
+L'ús de Linux és omnipresent: abasta des d'ordinadors personals i servidors fins a dispositius mòbils \cite{ibm_linux} \cite{redhat_linux}. Un exemple clar de la seva hegemonia és l'àmbit de la supercomputació. Segons la llista TOP500 \cite{top500_list}, des de l'any 2017 tots els superordinadors més potents del món utilitzen distribucions basades en GNU/Linux \cite{wikipedia_gnu_linux}. Aquesta versatilitat crítica exigeix que el kernel de Linux mantingui uns nivells d'estabilitat excel·lents.
+
+En aquest context, el professor Anton Baka Baka afirma: "Fa temps que Linux és un kernel estable i no aporta noves modificacions". Aquesta tesi suggereix que l'estabilitat assolida implica una aturada en el desenvolupament o una manca d'innovació recent.
+
+L'objectiu d'aquest treball és demostrar que aquesta afirmació és errònia, provant que l'estabilitat és compatible amb un ritme de modificació constant.
+\section{Metodologia}
+
+Per avaluar la veracitat de l'afirmació del professor Baka Baka, s'ha seguit un enfocament basat en l'examen de dades quantitatives i qualitatives. Seguint els principis d'avaluació de la informació tècnica proposats per Zobel \cite{zobel_writing}, s'han utilitzat les següents fonts:
+
+\begin{itemize}
+    \item \textbf{Estadístiques oficials de desenvolupament:} S'han consultat les bases de dades de LWN.net i KernelNewbies per obtenir informació sobre el nombre de commits, la participació de desenvolupadors i la freqüència de publicació de versions.
+    \item \textbf{Repositoris de codi font:} S'ha analitzat l'activitat del repositori oficial de Git, disponible públicament a través del mirall de GitHub, per observar el volum històric i actual de modificacions.
+    \item \textbf{Documentació tècnica oficial:} S'han revisat les notes de llançament disponibles a kernel.org per identificar les noves funcionalitats i millores implementades en versions recents.
+\end{itemize}
+
+Aquesta metodologia permet contrastar l'afirmació amb dades objectives i verificables.
+
+\section{Evolució i actualització del Linux}
+
+L'ànim d'aquesta secció és demostrar amb dades reals que Linux és un sistema viu, amb actualitzacions i canvis freqüents.
+
+\subsection{Freqüència de llançaments i de modificacions}
+
+El model de desenvolupament de Linux es basa en cicles de llançament ràpids i regulars. Segons les estadístiques publicades per KernelNewbies \cite{kernelnewbies}, es publica una versió nova en aproximadament cada dos mesos.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Versió} & \textbf{Data de llançament} & \textbf{Estat} & \textbf{Commits (aprox.)} & \textbf{Developers} \\
+        \midrule
+        Linux 6.18 & Novembre 2025 & LTS & $\sim$13.710 & 2.134 \\
+        Linux 6.17 & Setembre 2025 & EOL & $\sim$13.000 & 2.038 \\
+        Linux 6.16 & Juliol 2025 & EOL & $\sim$14.600 & 2.057 \\
+        Linux 6.15 & Maig 2025 & EOL & $\sim$11.000 & 2.068 \\
+        Linux 6.14 & Març 2025 & EOL & $\sim$11.000 & 1.897\\
+        Linux 6.13 & Gener 2025 & EOL & $\sim$12.900 & 2.001\\
+        Linux 6.12 & Novembre 2024 & LTS & $\sim$13.300 & 2.090 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Desenvolupament de kernels Linux durant el 2024--2025. Dades extretes de LWN.net \cite{lwn_618_stats}.}
+    \label{tab:kernel_stats}
+\end{table}
+
+Com pot observar-se a la Taula \ref{tab:kernel_stats}, el ritme d'actualitzacions, i per tant de comits, és constant entre totes les seves versions durant 2024 i 2025. Cada versió incorpora entre 11.000 i 15.000 commits, que s'interpreta com modificiacions al codi font. Per no anar més lluny, la versió 6.18, la més recent, publicada al novembre de 2025, va incorporar 13.710 canvis nous, i tots gràcies a més de 2.000 desenvolupadors, xifra rècord; això ens ensenya que Linux és un projecte de codi obert molt viu i sostingut per un munt de desenvolupadors.
+
+El nombre de desenvolupadors entre totes les versions és també força estable amb una tendència a l'alça. Segons un informe publicat per Jonathan Corbet a LWN.net \cite{lwn_stats}, les noves versions han comptat amb més de 2.000 col·laboradors diferents, xifra que representa un màxim històric per al projecte. Aquesta dada és rellevant perquè indica que la comunitat de desenvolupadors està creixent, fet que contribueix a mantenir un ritme elevat de modificacions i millores.
+
+Aquestes dades xoquen i contradiuen clarament la hipotesi de que Linux no aporta noves modificacions. Es pot veure tot el contrari, que està en constant evolució i desenvolupament.
+
+\subsection{Anàlisi del repositori públic (GitHub)}
+
+El repositori oficial de Linux, accessible públicament a través de GitHub \cite{github_linux}, proporciona una visió complementària de l'activitat del projecte (apartat \ref{tab:kernel_stats}). Les dades del repositori, capturades el 25 de desembre del 2025, es mostren a la Figura \ref{fig:stars}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{stars.png}
+    \caption{Captura del repositori oficial de Linux a GitHub (25 de desembre de 2025). Font: \cite{github_linux}.}
+    \label{fig:stars}
+\end{figure}
+
+Les mètriques del repositori són les següents:
+\begin{itemize}
+    \item \textbf{Volum històric acumulat:} Més d'1.412.000 commits des de l'inici del projecte.
+    \item \textbf{Indicadors d'interès comunitari:} 212.000 estrelles i 59.000 bifurcacions (\textit{forks}), xifres que superen àmpliament les d'altres sistemes operatius.
+\end{itemize}
+
+Més rellevant encara és la continuïtat temporal de l'activitat. La Figura \ref{fig:commits} mostra la distribució setmanal de commits durant l'any en curs.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{commits.png}
+    \caption{Distribució setmanal de commits al repositori de Linux durant l'any 2025.}
+    \label{fig:commits}
+\end{figure}
+
+Com es pot veure en aquest histograma, no hi ha cap setmana sense cap commit, és a dir, cap setmana sense activitat, independentment de períodes festius o de vacances. Això ens demostra que el desenvolupament del kernel és una acció constant i que no s'interromp, fet que contrasta amb la idea inicial que podíem haver tingut que estava estancat.
+
+\section{Innovacions recents}
+
+Més enllà de les dades quantitatives, també és important fer un anàlisi qualitatiu dels canvis, ja que no sempre la quantitat es igual a qualitat, ni quantitat de canvis signifiqui innovació
+
+\subsection{Incorporació del llenguatge Rust}
+
+Una de les modificacions més significatives/innovadores dels últims anys ha estat la introducció del llenguatge de programació Rust com a segon llenguatge oficial del kernel, juntament amb C. Aquesta integració es va iniciar amb la versió 6.1, publicada al desembre del 2022 \cite{kernel_rust_docs}.
+
+El llenguatge C ha estat un pilar fondamental en pràcticament qualsevol sistema operatiu, és a dir, el que s'usava per programar el kernel. Però estudis realitzats per Microsoft i Google \cite{microsoft_rust_study} \cite{google_rust_study} han demostrat que aproximadament el 70\% de les vulnerabilitats de seguretat crítiques (CVEs) tenen el seu origen en errors de gestió de memòria en codi escrit en C o C++. Rust, dissenyat amb un sistema de tipus que garanteix la seguretat de memòria en temps de compilació, permet eliminar aquesta classe d'errors de manera sistemàtica.
+
+La integració de Rust no és només un canvi cosmètic, o un caprici dels desenvolupadors, sinó és una reformulació que permet escriure controladors de dispositiu (\textit{drivers}) amb garanties de seguretat verificables. Un projecte que estigués estancat, doncs no adoptaria un canvi d'aquesta magnitud en la seva arquitectura.
+
+\subsection{Extensibilitat amb eBPF}
+
+Un altre exemple rellevant d'innovació recent és la tecnologia eBPF (Extended Berkeley Packet Filter) \cite{ebpf_docs} \cite{kernel_bpf_docs} \cite{lwn_ebpf_kernel}. eBPF permet executar programes en un entorn sandboxed dins del kernel, sense necessitat de modificar el codi font principal ni de carregar mòduls del kernel potencialment perillosos.
+
+Aquesta tecnologia ha transformat substancialment les capacitats del kernel. Empreses com Meta i Netflix utilitzen eBPF per modificar dinàmicament el comportament de la xarxa i implementar sistemes avançats d'observabilitat en temps real. Efectivament, eBPF converteix Linux en un sistema amb característiques de micro-kernel programable, una arquitectura molt més avançada que els kernels monolítics convencionals.
+
+\section{Discussió: Estabilitat i desenvolupament continu}
+
+L'anàlisi de les dades presentades permet identificar una confusió conceptual en l'afirmació del professor Baka Baka. L'estabilitat d'un sistema operatiu no implica necessàriament l'absència de modificacions.
+
+En el context de Linux, l'estabilitat fa referència al manteniment de les interfícies públiques (APIs) i a la compatibilitat binària amb les aplicacions d'usuari. Aquest principi queda reflectit en el conegut lema de Linus Torvalds: \textit{``We do not break userspace''}. La compatibilitat amb versions anteriors garanteix que el programari desenvolupat per a versions antigues del kernel continuï funcionant en versions més recents.
+
+No obstant això, aquesta estabilitat d'interfícies és compatible amb un procés continu d'evolució del codi intern del kernel. Les modificacions es centren en:
+
+\begin{itemize}
+    \item Suport per a noves arquitectures de hardware (per exemple, l'expansió de RISC-V o millores en les plataformes ARM) \cite{lwn_riscv} \cite{kernelnewbies}.
+    \item Implementació de noves tecnologies de seguretat i auditoria \cite{kernel_security_docs}.
+    \item Optimització del rendiment en entorns de computació d'alt rendiment i infraestructura al núvol \cite{kernel_performance}.
+\end{itemize}
+
+Aquest model de desenvolupament demostra que és possible mantenir l'estabilitat operativa mentre s'introdueixen innovacions significatives. La clau resideix en els processos rigorosos de revisió de codi i testing que s'apliquen abans d'integrar els canvis al codi principal.
+
+\section{Conclusions}
+
+L'anàlisi presentat en aquest treball permet refutar l'afirmació inicial del professor Anton Baka Baka. Hi ha evidències sòlides i empíriques que demostren que el kernel Linux manté un ritme de desenvolupament frenètic i actiu.
+
+Mirant les dades quantitatives, hi ha més de 11.000 commits per cada versió, amb cicles de publicació de noves versions de 2 mesos, a més d'un nombre rècord de desenvolupadors actius (superior a 2.000 en versions recents). Aquestes xifres indiquen un volum d'activitat incompatible amb la noció d'estancament.
+
+Pel que fa a l'anàlisi qualitativa, aquesta permet corroborar aquestes conclusions. La integració de tecnologies com Rust o eBPF demostra que el kernel es pot reinventar i adaptar-se als reptes tecnològics actuals.
+
+Finalment, cal dir que l'estabilitat de Linux no és sinònim d'immobilitat, sinó que és el fruit d'un procés continu de millora i manteniment rigorós. És a dir, aconsegueix combinar estabilitat amb innovació, mostrant-nos que aquests dos objectius no són excloents.
+
+Per tant, l'afirmació del professor queda desmentida per dades empíriques i evidències tècniques sòlides. Linux continua sent un dels projectes de programari obert més dinàmics de l'actualitat.
+
+\newpage 
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\end{document}
