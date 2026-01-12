@@ -1,0 +1,184 @@
+1. 
+S'ha decidit utilitzar un Buffer Circular basat en un array estàtic ('keyboard_buffer') de 128 posicions. 
+Ja que hem pensat que dins d'una rutina d'interrupció no és segur utilitzar memòria dinàmica, per això ens hem 
+decantat per un array de mida fixe.
+Hem decidit definir l'struct event_t en sched.h p sigui accessible des de rutines d'interrupció i de syscalls.
+També, per omplir el camp pressed, hem decidit utilitzar una operació lògica ((make >> 7) ^ 1) per invertir el 
+8 bit de make, de tal forma valgui 1 quan pressed i  0 quan relased.
+
+Modificacions:
+sched.h: Afegir definció struct event_t
+interrupt.c: Afegir array keyboard_buffer i 3 variables per gestionar-ho. Modifiquem funció keyboard_routine per 
+             omplir el buffer.
+
+2.
+Hem decidit replicar la declaracio de event_t a libc.h perquè l'usuari també hi pugui accedir.
+Com l'enunciat diu exlicitament que ha de ser no bloquejant, doncs si no n'hi ha cap tecla retornem 0 
+immediatament, també si el punter es nul, retornem error.
+S'ha hagut de comprovar que el parametre *ev, estigui també en l'espai d'adrecces d'usuari.
+
+Modificacions:
+libc.h: Afegir definició struct event_t
+         Afegir definició de int pollEvent(struct event_t *ev)
+sys.c: S'ha implementat la crida a sistema sys_pollEvent(struct event_t *ev)
+       S'han declarat com a variables externes keyboard_buffer, total_keys i idx_keyboard_read, per poder 
+       treballar amb el buffer circular de tecles.
+sys_cal_table.S: S'ha agregat nova entrada per gestionar la sys_pollEvent (número 7)
+wrapper.S: S'ha afegit el wrapper de pollEvent
+interrupt.c: Afegir unra rutina per provar el error de cridar pollEvent des del kernel
+
+
+3, 4 i 5.
+Decisions: Els codis poden tenir com a màxim dos paràmetres, han de començar per "ESC[" i han d'acabar amb una lletra.
+
+io.h: Afegides les capçaleres de les funcions relacionades amb la pantalla.
+io.c: Implementades les funcions relacionades amb la pantalla. S'afegeixen les variables background_color i foreground_color. Es modifica printc per permetre escriure amb els colors definits.
+sys.c: Modificat sys_write per permetre el tractament de codis ANSI. Implementada funció adicional per parsejar.
+
+6. 
+El principal problema ha estat com representar els threads dins del task_struct i com gestionar la seva 
+identificació i finalització.
+Primer haviem pensat en no tractar com un thread inidividual, sino que tots son threads, es a dir, sense 
+modificar el task_struct.
+Però vam pensar que poder no era el que es demanava, així que vam opat per afegir un camp nou, el TID 
+(thread id) per identificar el thread, així un mateix procés podria tenir més d'un thread, però clar, 
+ara el dubte era saber quins i quants threads tenia el proces.
+I vam obtar per la forma fàcil i més simple no afegir cap camp nou per controlar-ho i recorre cada vegada 
+la ready queue i la bloqued, total , com que només tenim 10 PCBs no representa un problema, així que en el 
+exit, el que fem per saber si es l'últim thread del proces, 
+doncs fem exactament això, recorrer les dos llistes, si no n'hi ha cap pcb que comparteixi el mateix PID, 
+és l'unic thread, i per tant eliminem memória.
+Hi havia un problema respecte l'espai d'adreces: la definició anterior mapejava directament la posició 
+de la PCB amb el vector d'adreces, i això provocava que, si un procés inicial feia clones i moria abans 
+que els seus fills, la PCB reciclada sobrescrivís l'espai de direccions dels fills. Per aquesta raó hem 
+afegit un bitmap on 0 = lliure, i 1 = ocupat per controlar quines entrades estan lliures o no. Com que 
+hi ha poques entrades (10), em fet servir un shor(16 bits, de sobres per les 10 entrades que tenim). A 
+més hem hagut d'implementar una nova funció per alliberar el bitmap que la crida sys_exit.
+
+Ara el problema és un altre, la variable global errno (per proces), al ser una variable global, doncs si n'hi 
+ha més d'un thread, degut a la race condition és poden sobrescriure el valor de la variable global. Que podem fer 
+per solucionar-ho? Doncs havíem pensat 3 opcions:
+1. Modificar la pila d'usuari, descartada des del inici ja que ens ha semblat la mes complicada
+2. En lloc de tenir una variable global, doncs que sigui un array de NR_TASKS indexat pel TID, per fer aixó havíem de
+fer dos coses abans, la primera la syscall de gettid (implementada) i pensar un altre forma de guardar el TID, així que
+hem modificat el contador que teniem, i agafavem com el TID el PCB que ocupaben en el vector task.
+3. Afegir un camp al PCB on es guardi la variable errno de forma local per PCB, aquí també feia un altre syscall de 
+geterrno ja que no estava en espai d'usuari, llavors d'alguna forma havia de conseguir el valor.
+
+Primer vam provar d'implementar la opció 2, però ens vam trobar un problema, el de que cada vegada que es feia un clone
+doncs el nou thread hauria de començar sense errors, però aquesta assignació del array es feia un assignació molt dificil
+degut que estavem en dos espais diferents, el d'usuari i el de kernel, així que degut aixó ens vam acabar decantant per
+la opció 3, com que ja haviem fet la reasignació del TID no la vam canviar (però per fer aixó el TID ens és igual).
+Per implementar l'opció 3, doncs basicament cada vegada que es retorna un error s'escriu aquesta variable local, i des d'usuari
+si es vol llegir el perror(), doncs aquest abans fa un geterrno per saber el codi d'error.
+
+Ara per calcular el el TID agafem la pos del PCB dins de task[] (declarat en sched.c). Per aconseguir la posició
+agafem el punter al union task_union (és a dir el PCB actual) i li restem l'inici del array task, així era com ho havíem
+implementat pe la opció 2 i s'ha quedat així.
+
+Modificacions:
+- sched.h: S'ha afegit el camp TID en el task_struct
+           S'ha afegit el camp threadErrno en el task_struct
+- libc.h: S'ha afegit la definició de int clone
+          S'ha afegit la definició de gettid
+          S'ha afegit la definció de geterrno
+- libc.c: S'ha eliminat la variable global errno
+          S'ha modificat implementació perror() pq agafi el errno amb la syscall geterrno
+- sched.c: Inicialitzar camp TID i threadErrno en init i idle
+           Modificar la funció allocate_dir
+           Afegir una nova variable bitmap
+           Afegir nova funció desallocate_DIR(struct task_struct *t), per allibarar bitmap
+- sys_cal_table.S: S'ha agregat nova entrada per gestionar la sys_clone (número 3)
+- wrapper.S: S'ha afegit el wrapper per la funció clone
+             S'ha afegit el wrapper per la funció gettid
+             S'ha afegit el wrapper per la funció geterrno
+             Eliminar l'assignació a la variable errno que hi havia (negl %eax; movl %eax, errno;)
+- sys.c: S'ha implementat la funció sys_clone, per gestionar syscall de clone
+          S'ha adaptat la funció sys_exit perquè funcioni correctament amb els threads, es a dir, nomes alliberi recursos si es el últim thread.
+          CANVI NO ACTIU (comentat al text) -> Nova variable global TID, que serveix per tenir un contador per assignar un TID al thread.
+          Implementar la funció sys_gettid()
+          Implementar la funció sys_geterrno()
+          Modificar tots els returns d'error pq editin la variable errno local (possible millora, fer funció auxiliar o macro)
+- sys_cal_table.S: S'ha agregat nova entrada per gestionar la sys_geterrno (número 18)
+                   S'ha agregat nova entrada per gestionar la sys_gettid (número 19)
+
+
+Modificacions despres primer feedback:
+- sys.c: Comprovar paràmetres amb acces_ok (function i stack)
+         Eliminar parametre ja que no s'utilitzava
+- sched.c: Modificar inner_Task_switch pq només faci canvi de context si es tracta d'un procés
+           i no un thread (hem comparat per PID, també ho podriem haver fet per dir_pages_baseAddr)
+- wrapper.S: Adaptar pq sys_clone només rebi dos parametres
+
+
+7.
+Es crea una nueva estructura de dades al kernel en format vector que conté 16 semàfors (aquesta és la quantitat màxima que hi podrà haver alhora).
+Dins de l'struct semàfor, es crea el camp TID per definir si s'està fent servir per a algun thread o no (-1 en aquest cas).
+Modificacions:
+libc.h: S'afegeixen les capçaleres de les 4 funcions relacionades amb semàfors.
+wrapper.S: Afegits 4 wrappers per les crides relacionades amb semàfors.
+sys_call_table.S: 4 de les entrades s'associen a les crides relacionades amb semàfors.
+sys.c: S'implementen les 4 crides a sistema relacionades amb semàfors. Canvia sys_exit() per eliminar els semàfors actius pel thread.
+sched.h: Es defineix l'struct semàfor. Es declara el nombre màxim d'aquests (16).
+sched.c: Es crea el vector de semàfors. Es modifica init_sched() per inicialitzar-ho.
+errno.h: S'afegeixen codis d'error relacionats amb semàfors.
+libc.c: Afegit els missatges d'error a perror.
+
+Modificacions després de feedback:
+sched.h: Afegida variable al task struct per diferenciar si s'ha desbloquejat per signal (1) o destroy (-1).
+sys.c: modificades les funcions de semàfors per donar suport a la feature.
+
+8.
+La zona de memòria dinàmica (heap) va des de 20 pàgines després de terminar el bloc de codi fins al final de la memòria. Aquestes 20 pàgines
+es conserven per funcions com fork(), que la fan servir de temporal. Es crea una nova estructura al kernel, un vector d'structs de metadata sobre
+els slots que té cada procés, afegint aquesta informació al task_struct via un list_head.
+
+libc.h: S'afegeixen les capçaleres de les 2 funcions relacionades amb memòria.
+sys_call_table.S: 2 de les entrades s'associen a les crides relacionades amb memòria.
+wrapper.S: Afegits 2 wrappers per les crides relacionades amb memòria.
+mm.h: Definit el nombre màxim de grups (HEAP_SLOTS), que és equivalent a les pàgines no emprades fins ara. Definit l'struct heap_slot (vegeu explicació al codi). Definida la capçalera per a init_heap_slots().
+mm.c: Declarat un vector de HEAP_SLOTS posicions per emmagatzemar els structs heap_slot a memòria del kernel. Implementat init_heap_slots() i modificat init_mm(). Afegida funció per comprovar si una pàgina està en ús.
+sched.h: modificat el task struct per contenir una list_head per la metadata sobre els seus slots de memòria.
+sched.c: modificat init_idle() i init_task1() per inicialitzar el nou list_head.
+mm_address.h: definit l'inici del heap, just després de la regió de codi d'usuari.
+sys.c: Implementades les 2 crides a sistemes relacionades amb memòria. Modificat exit() per lliberar el heap del procés si és l'últim thread.
+        Modificat fork() per permetre que els fills heretin el heap.
+utils.c: Modificat acces_ok() per permetre accedir al heap.
+
+Modificacions després de feedback:
+sys.c: Afegides dues funcions per llegibilitat de codi, modificat fork() per des-fer els slots mapejats fins al moment en cas d'error.
+sys.c: modificat fork() per alliberar pcb i lliberar frames en cas d'error.
+utils.c: acces_ok() ara comprova que el punter correspongui a alguna de les regions del heap del procés, o a la zona data / codi
+
+9. 
+Per aquest milestone em decidit fer el classic joc del PONG d'un jugador, el qual controla la pala blava i l'ordinador la vermella.
+Les variables globals hem decidt alocarles amb un getslot, és a dir, ara son dinàmiques. 
+S'han creat 3 threads, un per gestionar el teclat, un per la lògica del joc i un per la part gràfica.
+Per evitar race conditions entre threads, s'utilitzen semàfors per protegir l'accés a la variable input.
+Per l'entrada de teclat, hem fet servir la yscall pollEvent, ja que ens dona informació sobre les tecles premudes, i a més és no bloquejant
+Finalment el test del joc l'hem fet jugant.
+
+Modificacions:
+pong.c: Lògica completa del joc Pong, gestió de threads, sincronització i entrada/sortida.
+
+10.
+El més dificl d'aquest apartat ha estat pensar en l'estructua dels slabs, es a dir? Inicialitzava l'usuari, els tenim prefixats, o com ho fem?
+Hem fet un array estàtic de 16 caches (slab_caches[16]). Aixó ens permet gestionar fins a 16 mides d'objectes diferents simultàniament. Quan una cache es 
+buida completament (tots els seus slabs s'alliberen), el seu slot s'allibera per ser reutilitzat per una altra mida. Cada slab és una pàgina física de 4096 bytes 
+(obtinguda amb getSlot). Les metadates hem deicidit guardarles al principi de la pàgina.
+Els slots lliures per pagina es guarden el punter al següent bloc lliure, es a dir, es una llista encadenada
+Logica del alloc, primer mirem si ja hi ha cache assignada, sino es crea i es retorna la posició.
+En el slab_free si la pagina no esta utilitzada es fa un delSlot per alliberar memoria. Fem ptr & ~FFF per obtenir 
+l'adreça base de la pàgina, pq sabem que amb getSlot retora pagines alineades
+
+Com que cada slot lliure té un punter al següent lliure, aquest valor és una adreça de 4 bytes, però el problema que hi havia es
+que si demanem mida més petita, doncs es corrmupien entre ells, doncs per arreglar-ho si la mida esta entre 0 < size < 4, doncs
+directament la posem size=4 per evitar aquest problema
+
+Tornant als arrays estatics, s'ha decidit fer-ho així ja que així l'usuari no s'ha de preocupar en inicialitzar ell les arrays. L'únic problema de fer-ho
+així, doncs les arrays màximes estan prefixades.
+
+Modificacions:
+libc.h: Definicions de struct slab i slab_cache_t
+libc.c: Implementació slab_allocate i slab_free
+        Nova estructura slab_caches[]
